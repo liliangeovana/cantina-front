@@ -1,5 +1,7 @@
+import Menu from "@/components/MenuNutri";
+
 export default function NutriHomePage(){
     return (
-        <div>Nutri HomePage</div>
+        <Menu />
     )
 }

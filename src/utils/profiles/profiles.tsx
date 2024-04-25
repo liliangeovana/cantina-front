@@ -1,14 +1,14 @@
 'use client'
 import React from 'react';
 import Checkbox from '@/components/Checkbox';
-import chooseProfileController from './controller/chooseProfileController';
+import useChooseProfileController from './controller/chooseProfileController';
 
 interface ProfilesProps {
     handleFormChange: (perfil: string) => void;
 }
 
 const Profiles: React.FC<ProfilesProps> = ({ handleFormChange }) => {
-    const { perfil, handlePerfilChange } = chooseProfileController();
+    const { perfil, handlePerfilChange } = useChooseProfileController();
 
     const handleChange = (newPerfil: string) => {
         handlePerfilChange(newPerfil);

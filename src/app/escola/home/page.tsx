@@ -1,5 +1,7 @@
+import MenuEscola from "@/components/MenuEscola";
+
 export default function EscolaHomePage(){
     return (
-        <div>Escola HomePage</div>
+        <MenuEscola/>
     )
 }

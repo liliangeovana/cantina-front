@@ -38,7 +38,7 @@ export default function LoginForm() {
                 disabled={!formValid || loading}
                 className={`my-3 w-80 p-2 border bg-cor4 border-gray-300 hover:bg-green-600 text-white rounded-lg focus:outline-none focus:border-gray-600 ${(!formValid || loading) ? "cursor-not-allowed opacity-50" : ""}`}
                 >
-                {loading ? "Processing" : "Login"}
+                {loading ? "Acessando.." : "Login"}
             </button>
             <Link 
             href="/register"

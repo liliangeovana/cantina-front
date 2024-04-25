@@ -6,7 +6,7 @@ interface ChooseProfileController {
   handleFormChange:(novoPerfil: string) => void;
 }
 
-const chooseProfileController = (): ChooseProfileController => {
+const useChooseProfileController = (): ChooseProfileController => {
   const [perfil, setPerfil] = useState<string | null>(() => {
     // Tenta obter o perfil armazenado na sessão
     if (typeof window !== 'undefined') {
@@ -34,4 +34,4 @@ const chooseProfileController = (): ChooseProfileController => {
   };
 };
 
-export default chooseProfileController;
+export default useChooseProfileController;

@@ -8,7 +8,7 @@ export default function SchoolRegisterForm() {
 
     return (
         <div className="flex flex-col gap-y-4 items-center justify-center h-svh bg-white">
-            <h1 className="text-cor3 font-medium uppercase">Cadastrar Escola</h1>
+            <h1 className="text-cor3 font-medium uppercase">Cadastro Escola</h1>
 
             <div className="flex flex-col gap-y-6 h-fit w-96">
                 {/**NOME */}
