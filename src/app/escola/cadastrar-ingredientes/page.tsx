@@ -1,5 +1,5 @@
-import MenuNutri from "@/components/MenuNutri";
-import CadastrarProdutosForm from "@/utils/forms/cadastrar-produtos/cadastrarProdutosForm";
+import MenuEscola from "@/components/MenuEscola";
+import CadastrarIngredientesForm from "@/utils/forms/cadastrar-ingredientes/cadastrarIngredientesForm";
 
 export default function cadastrarProdutos() {
     return (
@@ -7,10 +7,10 @@ export default function cadastrarProdutos() {
             <title>Cantina Tech | Cadastrar produtos</title>
             <div className="flex flex-row">
                 <section>
-                    <MenuNutri />
+                    <MenuEscola />
                 </section>
                 <section className="w-full">
-                    <CadastrarProdutosForm />
+                    <CadastrarIngredientesForm />
                 </section>
             </div>
         </div>
