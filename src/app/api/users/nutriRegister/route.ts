@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import bcrypt from 'bcryptjs';
 import nutriModel from "@/models/users/nutriModel";
 import { connect } from "../../../../../db";
-import toast from "react-hot-toast";
 
 connect()
 
