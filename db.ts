@@ -1,22 +1,22 @@
-import mongoose from 'mongoose';
+import mongoose, { ConnectOptions } from "mongoose";
 
-export async function connect() {
+let isConnected: boolean = false;
+
+export const connect = async (): Promise<void> => {
+    mongoose.set('strictQuery', true);
+
+    if (isConnected) {
+        console.log('Already connected to database');
+        return;
+    }
+
     try {
-        mongoose.connect(process.env.MONGO_URL!);
-        const connection = mongoose.connection;
-
-        connection.on('connected', () => {
-            console.log('MongoDB connected successfully');
-        })
-
-        connection.on('error', (err) => {
-            console.log('MongoDB connection error. Please make sure MongoDB is running. ' + err);
-            process.exit();
-        })
-
+        await mongoose.connect(process.env.MONGODB_URI as string, {
+            dbName: "cantina",
+        } as ConnectOptions);
+        isConnected = true;
+        console.log('Connected to database');
     } catch (error) {
-        console.log('Something goes wrong!');
-        console.log(error);
-        
+        console.log('Error connecting to database', error);
     }
 }
