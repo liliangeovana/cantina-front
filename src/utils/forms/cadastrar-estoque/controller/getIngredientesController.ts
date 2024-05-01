@@ -1,0 +1,25 @@
+import { useState, useEffect } from "react";
+import axios from "axios";
+
+const useBuscarNomesIngredientesController = () => {
+  const [nomesIngredientes, setNomesIngredientes] = useState<string[]>([]);
+
+  const fetchNomesIngredientes = async () => {
+    try {
+      const response = await axios.get("/api/produtos/get/");
+      const produtos = response.data;
+      const nomes = produtos.map((produto: any) => produto.genero);
+      setNomesIngredientes(nomes);
+    } catch (error) {
+      console.error("Erro ao buscar nomes dos ingredientes:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchNomesIngredientes();
+  }, []);
+
+  return { nomesIngredientes };
+};
+
+export default useBuscarNomesIngredientesController;

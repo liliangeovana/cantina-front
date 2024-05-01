@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connect } from "../../../../../db";
-import produtoModel from "@/models/produtos/produtoModel";
+import produtoModel from "@/models/produtos/produtoMode";
 
 connect();
 
