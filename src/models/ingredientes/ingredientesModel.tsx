@@ -1,37 +1,37 @@
 import mongoose from "mongoose";
+import { Schema } from "mongoose";
 
 const ingredienteSchema = new mongoose.Schema(
   {
-    tipo: {
+
+    genero: {
       type: String,
       required: true
     },
-    genero:{
-      type: String,
-      required: true
-    },
-    quantidade: {
-      type: String,
+    quantidadeRecebida: {
+      type: Number,
       required: true
     },
     unidade: {
       type: String,
       required: true
     },
-    validade:{
-      type:String,
+    validade: {
+      type: String,
       required: true
     },
-
     classificacao: {
       type: String,
       required: true
+    },
+    school: {
+      type: Schema.Types.ObjectId,
+      ref: 'schoolModel'
     },
   },
   { timestamps: true }
 );
 
-const ingredienteModel = mongoose.models.ingredienteModel || mongoose.model("ingredienteModel", ingredienteSchema);
+const Ingrediente = mongoose.models.Ingrediente || mongoose.model("Ingrediente", ingredienteSchema);
 
-
-export default ingredienteModel;
+export default Ingrediente;

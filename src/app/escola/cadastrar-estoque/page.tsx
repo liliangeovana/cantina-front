@@ -1,5 +1,5 @@
 import MenuEscola from "@/components/MenuEscola";
-import CadastrarIngredientesForm from "@/utils/forms/cadastrar-ingredientes/cadastrarIngredientesForm";
+import CadastrarIngredientesForm from "@/utils/forms/cadastrar-estoque/cadastrarIngredientesForm";
 
 export default function cadastrarProdutos() {
     return (
