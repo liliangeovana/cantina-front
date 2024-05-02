@@ -2,21 +2,23 @@
 import React, { useState, useEffect } from "react"
 import axios from "axios"
 
-interface ProdutoFormData{
-    classificacao:string,
+interface IngredientesFormData{
+    tipo:string,
     genero:string,
-    marca:string,
-    unidade: string,
-    medida: string
+            quantidade:string,
+            unidade:string,
+            validade:string,
+            classificacao:string,
 }
-const useCadastrarProdutoController = () => {
+const usecadastrarRefeicoesController = () => {
 
-    const [produto, setProduto] = useState<ProdutoFormData>({
-        classificacao: "",
-        genero: "",
-        marca: "",
-        unidade: "",
-        medida: "",
+    const [ingrediente, setIngrediente] = useState<IngredientesFormData>({
+        tipo:" ",
+        genero:"",
+        quantidade:"",
+        unidade:"",
+        validade:"",
+        classificacao:"",
     });
 
     const [formValid, setFormValid] = useState<boolean>(false);
@@ -24,26 +26,27 @@ const useCadastrarProdutoController = () => {
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setProduto({ ...produto, [name]: value });
+        setIngrediente({ ...ingrediente, [name]: value });
     };
 
     const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = e.target;
-        setProduto({ ...produto, [name]: value });
+        setIngrediente({ ...ingrediente, [name]: value });
     };
 
     const handleSubmit = async () => {
         try {
             setLoading(true);
-            const response = await axios.post("/api/produtos/register/", produto);
+            const response = await axios.post("/api/ingredientes/register/", ingrediente);
             alert("Cadastro feito com sucesso");
             //limpando os campos
-            setProduto({
-                classificacao: "",
-                genero: "",
-                marca: "",
-                unidade: "",
-                medida: "",
+            setIngrediente({
+                tipo:" ",
+                genero:"",
+                quantidade:"",
+                unidade:"",
+                validade:"",
+                classificacao:"",
             });
         } catch (error) {
             console.log('Cadastro falhou.', error);
@@ -55,15 +58,15 @@ const useCadastrarProdutoController = () => {
 
     // Verifica se o formulário é válido
     useEffect(() => {
-        const { genero } = produto;
+        const { genero } = ingrediente;
         if (genero) {
             setFormValid(true);
         } else {
             setFormValid(false);
         }
-    }, [produto]);
+    }, [ingrediente]);
 
-    return { produto, loading, formValid, handleSubmit, handleInputChange, handleSelectChange };
+    return { ingrediente, loading, formValid, handleSubmit, handleInputChange, handleSelectChange };
 }
 
-export default useCadastrarProdutoController;
+export default usecadastrarRefeicoesController;

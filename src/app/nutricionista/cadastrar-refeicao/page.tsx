@@ -1,10 +1,10 @@
 import MenuNutri from "@/components/MenuNutri";
-import CadastrarProdutosForm from "@/utils/forms/cadastrar-refeicoes/cadastrarRefeicoesForm";
+import CadastrarRefeicoesForm from "@/utils/forms/cadastrar-refeicoes/cadastrarRefeicoesForm";
 
 export default function cadastrarProdutos() {
     return (
-        <div>c
-            <title>Cantina Tech | Cadastrar produtos</title>
+        <div>
+            <title>Cantina Tech | Cadastrar Refeição</title>
             <div className="flex flex-row">
                 <section>
                     <MenuNutri />
