@@ -24,10 +24,14 @@ export async function POST(request: NextRequest) {
             for (const ingredienteData of reqBody) {
                 const { genero, quantidadeRecebida, unidade, validade, classificacao } = ingredienteData;
 
+                // Definindo quantidadeEstoque como igual a quantidadeRecebida
+                const quantidadeEstoque = quantidadeRecebida;
+
                 // Cria um novo registro de ingrediente associado à escola do usuário logado
                 const newIngrediente = new Ingrediente({
                     genero,
                     quantidadeRecebida,
+                    quantidadeEstoque, // Definindo quantidadeEstoque
                     unidade,
                     validade,
                     classificacao,
@@ -47,12 +51,16 @@ export async function POST(request: NextRequest) {
             });
         } else {
             // Caso não seja um array e o usuário cadastre um único ingrediente
-            const { genero, quantidadeRecebida, unidade, validade, classificacao } = reqBody;
+            const { genero, quantidadeRecebida,  unidade, validade, classificacao } = reqBody;
+
+            // Definindo quantidadeEstoque como igual a quantidadeRecebida
+            const quantidadeEstoque = quantidadeRecebida;
 
             // Cria um novo registro de ingrediente associado à escola do usuário logado
             const newIngrediente = new Ingrediente({
                 genero,
                 quantidadeRecebida,
+                quantidadeEstoque, // Definindo quantidadeEstoque
                 unidade,
                 validade,
                 classificacao,

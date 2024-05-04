@@ -12,6 +12,10 @@ const ingredienteSchema = new mongoose.Schema(
       type: Number,
       required: true
     },
+    quantidadeEstoque: {
+      type: Number,
+      required: true
+    },
     unidade: {
       type: String,
       required: true

@@ -6,7 +6,7 @@ export default function CadastrarProdutosForm() {
     const { produto, loading, formValid, handleSubmit, handleInputChange, handleSelectChange } = useCadastrarProdutoController();
 
     return (
-        <div className="flex flex-col items-center h-svh p-14">
+        <div className="flex flex-col items-center h-svh p-8">
             <h1 className="text-cor3 font-medium uppercase">Cadastro produtos</h1>
 
             <div className="flex flex-col gap-y-6 h-fit w-full px-16">
@@ -83,7 +83,6 @@ export default function CadastrarProdutosForm() {
                     <summary>Medida de embalagem </summary>
                     {/* Medida */}
                     <div className="flex flex-col gap-y-1 p-4">
-                        <label htmlFor="medida">Medida</label>
                         <input
                             className="p-2 border border-gray-400 rounded-lg focus:outline-none focus:border-gray-600"
                             id="medida"
