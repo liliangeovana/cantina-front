@@ -6,10 +6,10 @@ export default function CadastrarProdutosForm() {
     const { produto, loading, formValid, handleSubmit, handleInputChange, handleSelectChange } = useCadastrarProdutoController();
 
     return (
-        <div className="flex flex-col items-center h-svh p-8">
+        <div className="flex flex-col overflow-auto items-center h-svh p-8">
             <h1 className="text-cor3 font-medium uppercase">Cadastro produtos</h1>
 
-            <div className="flex flex-col gap-y-6 h-fit w-full px-16">
+            <div className="flex flex-col  gap-y-6 h-fit w-full px-16">
 
                 {/* CLASSIFICAÇÃO */}
                 <div className="flex flex-col gap-y-2">
@@ -55,7 +55,7 @@ export default function CadastrarProdutosForm() {
                         name="marca"
                         placeholder="Marca (opcional)"
                         value={produto.marca}
-                        onChange={handleInputChange}                    />
+                        onChange={handleInputChange} />
                 </div>
 
                 {/* Unidade */}
@@ -68,14 +68,16 @@ export default function CadastrarProdutosForm() {
                         onChange={handleSelectChange}
                         name="unidade"
                     >
-                        <option selected hidden>...</option>
-                        <option value="embalagem">Embalagem</option>
-                        <option value="kg">Kg</option>
-                        <option value="frasco">Frasco</option>
-                        <option value="cartela">Cartela</option>
-                        <option value="unidade">Unidade</option>
-                        <option value="pote">Pote</option>
-                        <option value="maço">Maço</option>
+                        <option hidden>...</option>
+                        <option value="cartelas">Cartela</option>
+                        <option value="caixas">Caixa</option>
+                        <option value="embalagens">Embalagem</option>
+                        <option value="frascos">Frasco</option>
+                        <option value="Kg">Kg</option>
+                        <option value="latas">Lata</option>
+                        <option value="maços">Maço</option>
+                        <option value="unidades">Unidade</option>
+                        <option value="lotes">Pote</option>
                     </select>
                 </div>
 
@@ -96,12 +98,12 @@ export default function CadastrarProdutosForm() {
                 </details>
             </div>
             <button
-                    onClick={handleSubmit}
-                    disabled={!formValid || loading}
-                    className={`w-80 p-2 mt-8 border bg-cor4 border-gray-300 hover:bg-green-600 text-white rounded-lg focus:outline-none focus:border-gray-600 ${(!formValid || loading) ? "cursor-not-allowed opacity-50" : ""}`}
-                >
-                    {loading ? "Processando..." : "Cadastrar"}
-                </button>
+                onClick={handleSubmit}
+                disabled={!formValid || loading}
+                className={`w-80 p-2 mt-8 border bg-cor4 border-gray-300 hover:bg-green-600 text-white rounded-lg focus:outline-none focus:border-gray-600 ${(!formValid || loading) ? "cursor-not-allowed opacity-50" : ""}`}
+            >
+                {loading ? "Processando..." : "Cadastrar"}
+            </button>
         </div>
     )
 }

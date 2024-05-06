@@ -3,10 +3,19 @@ import React from "react";
 import MenuEscola from "@/components/MenuEscola";
 import useGetIngredientesEscolaLogadaController from "./controller/getIngredientesEscolaLogadaController";
 import Loading from "@/components/Loading";
+import { formatarData } from "@/utils/formatarData";
 
 const VisualizarEstoque = () => {
   const { estoque, loading, error } = useGetIngredientesEscolaLogadaController();
-  
+
+  // Dividir os itens do estoque em duas listas: uma para os gêneros e outra para as quantidades e validades
+  const generos = estoque.map(item => item.genero);
+  const quantidadesEValidades = estoque.map(item => ({
+    quantidade: item.quantidadeEstoque,
+    validade: formatarData(item.validade),
+    unidade: item.unidade
+  }));
+
   return (
     <div>
       <title>Cantina Tech | Visualizar Estoque</title>
@@ -15,23 +24,55 @@ const VisualizarEstoque = () => {
           <MenuEscola />
         </section>
         <section className="w-full">
-          <div className="grid grid-cols-3 gap-4">
-            {loading ? (
-              <Loading />
-            ) : error ? (
+          <div className="h-svh p-8 flex justify-center overflow-auto"> {/* Removido justify-center */}
+            {loading && (
+              <div className="flex justify-center items-center">
+                <Loading />
+              </div>
+            )}
+            {error && (
               <p>Erro ao carregar os ingredientes: {error}</p>
-            ) : estoque && estoque.length > 0 ? (
-              estoque.map((item:any) => (
-                <div key={item._id} className="bg-gray-100 p-4">
-                  <h2 className="text-xl font-semibold">{item.genero}</h2>
-                  <p>Quantidade: {item.quantidadeEstoque}</p>
-                  <p>Unidade: {item.unidade}</p>
-                  <p>Validade: {item.validade}</p>
-                  <p>Classificação: {item.classificacao}</p>
+            )}
+            {estoque && estoque.length === 0 && !loading && !error && (
+              <div className="flex justify-center items-center">
+                <p>Nenhum item no estoque.</p>
+              </div>
+            )}
+            {!loading && !error && estoque && estoque.length > 0 && (
+              <div className="w-full text-center">
+                <div className="grid grid-cols-3 gap-8">
+                  <div className="flex flex-col gap-4">
+                    <h2 className="text-xl font-semibold">Estoque</h2>
+                    <div className="flex flex-col gap-3 m-auto">
+                      {generos.map((genero, index) => (
+                          <div className="bg-white w-44 p-2 rounded-md shadow">
+                            <p key={index}>{genero}</p>
+                          </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-4">
+                    <h2 className="text-xl font-semibold">Quantidade</h2>
+                    <div className="flex flex-col gap-3 m-auto">
+                      {quantidadesEValidades.map((item, index) => (
+                        <div className="bg-white w-44 p-2 rounded-md shadow">
+                          <p key={index}>{item.quantidade} {item.unidade}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-4">
+                    <h2 className="text-xl font-semibold">Validade</h2>
+                    <div className="flex flex-col gap-3 m-auto">
+                      {quantidadesEValidades.map((item, index) => (
+                        <div className="bg-white w-44 p-2 rounded-md shadow">
+                          <p key={index}>{item.validade}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-              ))
-            ) : (
-              <p>Nenhum item no estoque.</p>
+              </div>
             )}
           </div>
         </section>

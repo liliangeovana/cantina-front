@@ -61,8 +61,6 @@ const useCadastrarIngredientesController = () => {
         console.log("Ingrediente cadastrado com sucesso:", response.data);
       }
       alert("Cadastro feito com sucesso");
-      // Limpa os ingredientes
-      setIngredientes([]);
     } catch (error) {
       console.error('Cadastro falhou:', error);
       alert('Cadastro falhou.');
@@ -137,6 +135,22 @@ const useCadastrarIngredientesController = () => {
     setSearchValue("");
   };
 
+  const isLastIngredientComplete = () => {
+    const lastIngredientIndex = ingredientes.length - 1;
+    const lastIngredient = ingredientes[lastIngredientIndex];
+    if (!lastIngredient) {
+      return false; // Se não houver último ingrediente, retorna falso
+    }
+    // Verifica se todos os campos do último ingrediente estão preenchidos
+    return (
+      lastIngredient.genero &&
+      lastIngredient.quantidadeRecebida &&
+      lastIngredient.unidade &&
+      lastIngredient.validade &&
+      lastIngredient.classificacao
+    );
+  };
+
   // Filtra os nomes de ingredientes com base no valor de pesquisa
   const filteredNomesIngredientes = nomesIngredientes.filter(nome =>
     nome.toLowerCase().includes(searchValue.toLowerCase())
@@ -163,6 +177,7 @@ const useCadastrarIngredientesController = () => {
     setSearchValue,
     showOptionsList,
     setShowOptionsList,
+    isLastIngredientComplete,
     nomesIngredientesLoaded,
     filteredNomesIngredientes,
     handleInputChangeAndClear,
