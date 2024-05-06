@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
         const userId = getDataFromToken(request);
 
         // Buscando a escola associada ao usuário logado
-        const schoolObj = await schoolModel.findOne({ user: userId });
+        const schoolObj = await schoolModel.findOne({ _id: userId });
         if (!schoolObj) {
             return NextResponse.json({ error: "Escola não encontrada" }, { status: 400 });
         }
