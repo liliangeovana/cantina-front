@@ -45,9 +45,9 @@ const VisualizarEstoque = () => {
                     <h2 className="text-xl font-semibold">Estoque</h2>
                     <div className="flex flex-col gap-3 m-auto">
                       {generos.map((genero, index) => (
-                          <div className="bg-white w-44 p-2 rounded-md shadow">
-                            <p key={index}>{genero}</p>
-                          </div>
+                        <div className="bg-white w-44 p-2 rounded-md shadow" key={index}> {/* Add key prop */}
+                          <p>{genero}</p>
+                        </div>
                       ))}
                     </div>
                   </div>
@@ -55,8 +55,8 @@ const VisualizarEstoque = () => {
                     <h2 className="text-xl font-semibold">Quantidade</h2>
                     <div className="flex flex-col gap-3 m-auto">
                       {quantidadesEValidades.map((item, index) => (
-                        <div className="bg-white w-44 p-2 rounded-md shadow">
-                          <p key={index}>{item.quantidade} {item.unidade}</p>
+                        <div className="bg-white w-44 p-2 rounded-md shadow" key={index}> {/* Add key prop */}
+                          <p>{item.quantidade} {item.unidade}</p>
                         </div>
                       ))}
                     </div>
@@ -65,8 +65,8 @@ const VisualizarEstoque = () => {
                     <h2 className="text-xl font-semibold">Validade</h2>
                     <div className="flex flex-col gap-3 m-auto">
                       {quantidadesEValidades.map((item, index) => (
-                        <div className="bg-white w-44 p-2 rounded-md shadow">
-                          <p key={index}>{item.validade}</p>
+                        <div className="bg-white w-44 p-2 rounded-md shadow" key={index}> {/* Add key prop */}
+                          <p>{item.validade}</p>
                         </div>
                       ))}
                     </div>

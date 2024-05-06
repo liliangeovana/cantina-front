@@ -1,4 +1,5 @@
 import LogoutButton from "@/utils/logoutButton/logoutButton";
+import Image from "next/image";
 
 export default function MenuEscola() {
 
@@ -8,7 +9,7 @@ export default function MenuEscola() {
             <div className="h-svh flex flex-row bg-cor1">
                 <div className="flex flex-col bg-gray-100">
                     <div className="flex items-center justify-center shadow-md bg-white p-4">
-                        <img className="w-24 h-fit" src="../logo-menor.png" alt="logo cantina tech" />
+                    <Image src={"/logo-menor.png"} alt="logo cantina tech" width={96} height={96} />
                     </div>
                     <div className="h-svh flex flex-col justify-between w-56 bg-white overflow-hidden">
                         <ul className="flex flex-col py-1">
