@@ -32,7 +32,7 @@ export default function CadastrarIngredientesForm() {
       <h1 className="text-cor3 font-medium uppercase p-6 ">Cadastrar estoque</h1>
 
       {ingredientes.map((ingrediente, index) => (
-        <div key={index} className="grid grid-cols-[auto_6rem_auto_auto_auto_4rem] text-center gap-6 h-fit w-full px-16 py-3">
+        <div key={index} className="grid grid-cols-[auto_12rem_12rem_auto_4rem] text-center gap-6 h-fit w-full px-16 py-3">
           <div className="flex flex-col gap-2 relative">
             <label htmlFor={`genero_${index}`}>Nome do produto</label>
             <input
@@ -68,7 +68,7 @@ export default function CadastrarIngredientesForm() {
 
           {/* Quantidade */}
           <div className="flex flex-col gap-2">
-            <label htmlFor={`quantidade`}>Quantidade</label>
+            <label htmlFor={`quantidade`}>Quantidade (Kg)</label>
             <input
               className="p-2 text-center border border-gray-400 rounded-lg focus:outline-none focus:border-gray-600"
               id={`quantidade`}
@@ -80,31 +80,9 @@ export default function CadastrarIngredientesForm() {
             />
           </div>
 
-          {/* Unidade */}
-          <div className="flex flex-col gap-2">
-            <label htmlFor={`unidade`}>Unidade</label>
-            <select
-              className="p-2 border border-gray-400 rounded-lg focus:outline-none focus:border-gray-600 text-black"
-              id={`unidade`}
-              name={`unidade`}
-              value={ingrediente.unidade}
-              onChange={(e) => handleSelectChange(e, index)}
-            >
-              <option hidden>...</option>
-              <option value="cartelas">Cartela</option>
-              <option value="caixas">Caixa</option>
-              <option value="embalagens">Embalagem</option>
-              <option value="frascos">Frasco</option>
-              <option value="Kg">Kg</option>
-              <option value="latas">Lata</option>
-              <option value="maços">Maço</option>
-              <option value="unidades">Unidade</option>
-              <option value="lotes">Pote</option>
-            </select>
-          </div>
 
           {/* Validade */}
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-2">
             <label htmlFor={`validade`}>Validade</label>
             <input
               className="p-2 border border-gray-400 rounded-lg focus:outline-none focus:border-gray-600"

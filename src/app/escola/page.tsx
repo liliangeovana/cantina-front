@@ -8,23 +8,33 @@ import { formatarData } from "@/utils/formatarData";
 const VisualizarEstoque = () => {
   const { estoque, loading, error } = useGetIngredientesEscolaLogadaController();
 
+
+   // Obtendo a data atual do computador
+   const dataAtual = new Date();
+
   // Dividir os itens do estoque em duas listas: uma para os gêneros e outra para as quantidades e validades
   const generos = estoque.map(item => item.genero);
   const quantidadesEValidades = estoque.map(item => ({
-    quantidade: item.quantidadeEstoque,
+    quantidadeGramas: item.quantidadeEstoqueGramas,
+    quantidadeRecebida: item.quantidadeRecebida,
     validade: formatarData(item.validade),
-    unidade: item.unidade
+    // Verificando se a validade está vencida
+    vencido: new Date(item.validade) < dataAtual
   }));
 
   return (
     <div>
       <title>Cantina Tech | Visualizar Estoque</title>
       <div className="flex flex-row">
+
+        {/**MENU */}
         <section>
           <MenuEscola />
         </section>
+
+        {/**LOADING */}
         <section className="w-full">
-          <div className="h-svh p-8 flex justify-center overflow-auto"> {/* Removido justify-center */}
+          <div className="h-svh p-8 flex justify-center overflow-auto"> 
             {loading && (
               <div className="flex justify-center items-center">
                 <Loading />
@@ -38,6 +48,8 @@ const VisualizarEstoque = () => {
                 <p>Nenhum item no estoque.</p>
               </div>
             )}
+
+            {/**ITEMS CARREGADOS */}
             {!loading && !error && estoque && estoque.length > 0 && (
               <div className="w-full text-center">
                 <div className="grid grid-cols-3 gap-8">
@@ -56,7 +68,7 @@ const VisualizarEstoque = () => {
                     <div className="flex flex-col gap-3 m-auto">
                       {quantidadesEValidades.map((item, index) => (
                         <div className="bg-white w-44 p-2 rounded-md shadow" key={index}> {/* Add key prop */}
-                          <p>{item.quantidade} {item.unidade}</p>
+                          <p>{item.quantidadeGramas}g</p>
                         </div>
                       ))}
                     </div>
@@ -65,9 +77,9 @@ const VisualizarEstoque = () => {
                     <h2 className="text-xl font-semibold">Validade</h2>
                     <div className="flex flex-col gap-3 m-auto">
                       {quantidadesEValidades.map((item, index) => (
-                        <div className="bg-white w-44 p-2 rounded-md shadow" key={index}> {/* Add key prop */}
-                          <p>{item.validade}</p>
-                        </div>
+                        <div className={`bg-white w-44 p-2 rounded-md shadow ${item.vencido ? 'border border-red-500 text-red-500' : ''}`} key={index}> {/* Add key prop */}
+                        <p>{item.validade}</p>
+                      </div>
                       ))}
                     </div>
                   </div>

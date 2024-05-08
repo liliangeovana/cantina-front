@@ -118,7 +118,7 @@ const NutriHomePage = () => {
                           })
                           .map((ingrediente: any, index: number) => (
                             <div key={index} className="bg-white w-44 p-2 rounded-md shadow">
-                              <p>{ingrediente.quantidadeRecebida} {ingrediente.unidade}</p>
+                              <p>{ingrediente.quantidadeRecebida}</p>
                             </div>
                           ))}
                       </div>
@@ -146,7 +146,7 @@ const NutriHomePage = () => {
                           })
                           .map((ingrediente: any, index: number) => (
                             <div key={index} className="bg-white w-44 p-2 rounded-md shadow">
-                              <p>{ingrediente.quantidadeEstoque} {ingrediente.unidade}</p>
+                              <p>{ingrediente.quantidadeEstoque}</p>
                             </div>
                           ))}
                       </div>

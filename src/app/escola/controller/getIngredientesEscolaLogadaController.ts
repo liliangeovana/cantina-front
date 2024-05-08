@@ -5,8 +5,8 @@ import axios from "axios";
 interface IngredienteEstoque {
     _id: string;
     genero: string;
-    quantidadeEstoque: number;
-    unidade: string;
+    quantidadeRecebida: number;
+    quantidadeEstoqueGramas: number;
     validade: string;
     classificacao: string;
 }
