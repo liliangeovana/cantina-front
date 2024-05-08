@@ -22,20 +22,32 @@ export async function POST(request: NextRequest) {
 
             // Iterando sobre cada ingrediente no array reqBody
             for (const ingredienteData of reqBody) {
-                const { genero, quantidadeRecebida, unidade, validade, classificacao } = ingredienteData;
+                const { genero, quantidadeRecebida, validade, classificacao } = ingredienteData;
+            
 
-                // Definindo quantidadeEstoque como igual a quantidadeRecebida
-                const quantidadeEstoque = quantidadeRecebida;
+                // Cálculo da quantidade em gramas a partir da quantidade em quilogramas
+                const quantidadeEstoqueGramas = quantidadeRecebida * 1000; // 1 kg = 1000 g
+
+                // Verifica se já existe um ingrediente com o mesmo gênero e validade associado à escola do usuário
+                const existingIngredient = await Ingrediente.findOne({
+                    genero,
+                    validade
+                  });
+                  
+                  // Se existir um ingrediente com o mesmo gênero e validade, retorne um erro
+                  if (existingIngredient) {
+                    return NextResponse.json({ error: "Ingrediente já cadastrado com o mesmo gênero e validade" }, { status: 400 });
+                  }
+        
 
                 // Cria um novo registro de ingrediente associado à escola do usuário logado
                 const newIngrediente = new Ingrediente({
                     genero,
                     quantidadeRecebida,
-                    quantidadeEstoque, // Definindo quantidadeEstoque
-                    unidade,
+                    quantidadeEstoqueGramas,
                     validade,
                     classificacao,
-                    school: schoolObj._id
+                    school: schoolObj._id,
                 });
 
                 // Salvando o novo ingrediente no banco de dados
@@ -51,20 +63,33 @@ export async function POST(request: NextRequest) {
             });
         } else {
             // Caso não seja um array e o usuário cadastre um único ingrediente
-            const { genero, quantidadeRecebida,  unidade, validade, classificacao } = reqBody;
+            const { genero, quantidadeRecebida,   validade, classificacao } = reqBody;
 
-            // Definindo quantidadeEstoque como igual a quantidadeRecebida
-            const quantidadeEstoque = quantidadeRecebida;
+
+            // Cálculo da quantidade em gramas a partir da quantidade em quilogramas
+            const quantidadeEstoqueGramas = quantidadeRecebida * 1000; // 1 kg = 1000 g
+
+            // Verifica se já existe um ingrediente com o mesmo gênero e validade associado à escola do usuário
+            const existingIngredient = await Ingrediente.findOne({
+                genero,
+                validade
+              });
+              
+              // Se existir um ingrediente com o mesmo gênero e validade, retorne um erro
+              if (existingIngredient) {
+                return NextResponse.json({ error: "Ingrediente já cadastrado com o mesmo gênero e validade" }, { status: 400 });
+              }
+    
+
 
             // Cria um novo registro de ingrediente associado à escola do usuário logado
             const newIngrediente = new Ingrediente({
                 genero,
                 quantidadeRecebida,
-                quantidadeEstoque, // Definindo quantidadeEstoque
-                unidade,
+                quantidadeEstoqueGramas,
                 validade,
                 classificacao,
-                school: schoolObj._id
+                school: schoolObj._id,
             });
 
             // Salva o novo ingrediente no banco de dados

@@ -6,8 +6,6 @@ import useBuscarNomesIngredientesController from "./getIngredientesController";
 interface Ingrediente {
   genero: string;
   quantidadeRecebida: string;
-  quantidadeEstoque: string;
-  unidade: string;
   validade: string;
   classificacao: string;
 }
@@ -25,18 +23,29 @@ const useCadastrarIngredientesController = () => {
   // Trazendo os nomes dos ingredientes cadastrados pelas nutricionistas
   const { nomesIngredientes } = useBuscarNomesIngredientesController();
 
-  // Função para lidar com a mudança de entrada de texto
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
-    const { name, value } = e.target;
-    const newIngredientes = [...ingredientes];
-    newIngredientes[index] = { ...newIngredientes[index], [name]: value };
+  // Função para lidar com a mudança de entrada de data
+const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+  const { name, value } = e.target;
+  let adjustedValue = value;
+  
+  // Adiciona um dia à data para compensar a diferença de fuso horário
+  if (name === 'validade') {
+    const date = new Date(value);
+    date.setDate(date.getDate() + 1);
     
-    // Define quantidadeEstoque como a mesma quantidadeRecebida que foi definida
-    newIngredientes[index].quantidadeEstoque = value;
-    
-    setIngredientes(newIngredientes);
-  };
+    // Ajusta manualmente a data para o formato YYYY-MM-DD
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Adiciona zero à esquerda se for necessário
+    const day = String(date.getDate()).padStart(2, '0'); // Adiciona zero à esquerda se for necessário
+    adjustedValue = `${year}-${month}-${day}`;
+  }
 
+  const newIngredientes = [...ingredientes];
+  newIngredientes[index] = { ...newIngredientes[index], [name]: adjustedValue };
+
+
+  setIngredientes(newIngredientes);
+};
   // Função para lidar com a mudança de seleção
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>, index: number) => {
     const { name, value } = e.target;
@@ -61,6 +70,7 @@ const useCadastrarIngredientesController = () => {
         console.log("Ingrediente cadastrado com sucesso:", response.data);
       }
       alert("Cadastro feito com sucesso");
+      window.location.reload();
     } catch (error) {
       console.error('Cadastro falhou:', error);
       alert('Cadastro falhou.');
@@ -73,8 +83,8 @@ const useCadastrarIngredientesController = () => {
   useEffect(() => {
     const atLeastOneIngredient = ingredientes.length > 0;
     const allIngredientsValid = ingredientes.every(ingrediente => {
-      const { quantidadeRecebida, unidade, validade, classificacao } = ingrediente;
-      return quantidadeRecebida && unidade && validade && classificacao;
+      const { quantidadeRecebida, validade, classificacao } = ingrediente;
+      return quantidadeRecebida && validade && classificacao;
     });
     setFormValid(atLeastOneIngredient && allIngredientsValid);
   }, [ingredientes]);
@@ -86,7 +96,6 @@ const useCadastrarIngredientesController = () => {
     newIngredientes[index] = {
       ...newIngredientes[index],
       genero: value,
-      quantidadeEstoque: value, // Atualiza quantidadeEstoque com o mesmo valor de quantidadeRecebida
     };
     setIngredientes(newIngredientes);
     setSearchValue(value);
@@ -119,18 +128,13 @@ const useCadastrarIngredientesController = () => {
     const newIngrediente: Ingrediente = {
       genero: "",
       quantidadeRecebida: "",
-      quantidadeEstoque: "", 
-      unidade: "",
       validade: "",
       classificacao: "",
     };
-  
-    // Define a quantidadeEstoque com base no valor de quantidadeRecebida
-    newIngrediente.quantidadeEstoque = newIngrediente.quantidadeRecebida;
-  
+
     // Adiciona o novo ingrediente à lista de ingredientes
     setIngredientes([...ingredientes, newIngrediente]);
-  
+
     // Limpa o valor de pesquisa
     setSearchValue("");
   };
@@ -145,11 +149,11 @@ const useCadastrarIngredientesController = () => {
     return (
       lastIngredient.genero &&
       lastIngredient.quantidadeRecebida &&
-      lastIngredient.unidade &&
       lastIngredient.validade &&
       lastIngredient.classificacao
     );
   };
+
 
   // Filtra os nomes de ingredientes com base no valor de pesquisa
   const filteredNomesIngredientes = nomesIngredientes.filter(nome =>

@@ -12,12 +12,8 @@ const ingredienteSchema = new mongoose.Schema(
       type: Number,
       required: true
     },
-    quantidadeEstoque: {
+    quantidadeEstoqueGramas: {
       type: Number,
-      required: true
-    },
-    unidade: {
-      type: String,
       required: true
     },
     validade: {
