@@ -1,9 +1,7 @@
-// utils.js
 export const formatarData = (data: any) => {
-    const dataObj = new Date(data);
-    const dia = dataObj.getDate().toString().padStart(2, '0');
-    const mes = (dataObj.getMonth() + 1).toString().padStart(2, '0');
-    const ano = dataObj.getFullYear();
-    return `${dia}/${mes}/${ano}`;
-  };
-  
+  const dataObj = new Date(data);
+  const dia = dataObj.getUTCDate().toString().padStart(2, '0'); // Obtém o dia em UTC
+  const mes = (dataObj.getUTCMonth() + 1).toString().padStart(2, '0'); // Obtém o mês em UTC
+  const ano = dataObj.getUTCFullYear(); // Obtém o ano em UTC
+  return `${dia}/${mes}/${ano}`;
+};

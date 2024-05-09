@@ -1,6 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import useNutriRegisterController from "./controller/nutriRegisterController";
+import LoadingButtons from "@/components/LoadingButtons";
 
 export default function NutriRegisterForm() {
     const { nutri, loading, formValid, handleInputChange, handleSubmit } = useNutriRegisterController();
@@ -70,9 +71,9 @@ export default function NutriRegisterForm() {
                 <button
                     onClick={handleSubmit}
                     disabled={!formValid || loading}
-                    className={`p-2 border bg-cor4 border-gray-300 hover:bg-green-600 text-white rounded-lg focus:outline-none focus:border-gray-600 ${(!formValid || loading) ? "cursor-not-allowed opacity-50" : ""}`}
+                    className={`p-2 h-10 border bg-cor4 border-gray-300 hover:bg-green-600 text-white rounded-lg focus:outline-none focus:border-gray-600 ${(!formValid || loading) ? "cursor-not-allowed opacity-50" : ""}`}
                 >
-                    {loading ? "Processando..." : "Cadastrar"}
+                    {loading ? <LoadingButtons/>: "Cadastrar"}
                 </button>
                 {/**LINK LOGIN */}
                 <Link 
