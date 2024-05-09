@@ -40,7 +40,7 @@ const useLoginFormController = () => {
             const route = perfilSelecionado && perfilSelecionado in perfilRoutes ? perfilRoutes[perfilSelecionado] : "/home";
             router.push(route);
         } catch (error) {
-            console.log("Login failed");
+            alert("Login failed");
 
         } finally {
             setLoading(false);

@@ -1,6 +1,7 @@
 'use client'
 import React, { useEffect } from "react";
 import useCadastrarIngredientesController from "./controller/cadastrarIngredientesController";
+import LoadingButtons from "@/components/LoadingButtons";
 
 export default function CadastrarIngredientesForm() {
   const {
@@ -137,9 +138,9 @@ export default function CadastrarIngredientesForm() {
       <button
         onClick={handleSubmit}
         disabled={!formValid || loading}
-        className={`w-80 p-2 mt-10 border bg-cor4 border-gray-300 hover:bg-green-600 text-white rounded-lg focus:outline-none focus:border-gray-600 ${(!formValid || loading) ? "cursor-not-allowed opacity-50" : ""}`}
+        className={`w-80 h-10 p-2 mt-10 border bg-cor4 border-gray-300 hover:bg-green-600 text-white rounded-lg focus:outline-none focus:border-gray-600 ${(!formValid || loading) ? "cursor-not-allowed opacity-50" : ""}`}
       >
-        {loading ? "Processando..." : "Cadastrar"}
+        {loading ? <LoadingButtons /> : "Cadastrar"}
       </button>
     </div>
   );

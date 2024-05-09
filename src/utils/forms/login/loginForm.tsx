@@ -1,12 +1,13 @@
 'use client'
 import Link from "next/link";
 import useLoginFormController from "./controller/loginFormController";
+import LoadingButtons from "@/components/LoadingButtons";
 
 export default function LoginForm() {
-    const { user, updateUser, loading, perfilRoutes, formValid, onLogin } = useLoginFormController();
+    const { user, updateUser, loading, formValid, onLogin } = useLoginFormController();
 
     return (
-        <div className="flex flex-col gap-y-1 items-center justify-center mt-10">
+        <div className="flex flex-col gap-y-1 items-center justify-center mt-8">
             <div className="flex flex-col gap-y-2 h-fit w-96">
                 <div className="flex flex-col gap-y-2">
                     <label htmlFor="email">Email</label>
@@ -36,9 +37,9 @@ export default function LoginForm() {
             <button
                 onClick={onLogin}
                 disabled={!formValid || loading}
-                className={`my-3 w-80 p-2 border bg-cor4 border-gray-300 hover:bg-green-600 text-white rounded-lg focus:outline-none focus:border-gray-600 ${(!formValid || loading) ? "cursor-not-allowed opacity-50" : ""}`}
+                className={`my-3 w-80 h-10 p-2 border bg-cor4 border-gray-300 hover:bg-green-600 text-white rounded-lg focus:outline-none focus:border-gray-600 ${(!formValid || loading) ? "cursor-not-allowed opacity-50" : ""}`}
                 >
-                {loading ? "Acessando.." : "Login"}
+                {loading ? <LoadingButtons /> : "Login"}
             </button>
             <Link 
             href="/register"
