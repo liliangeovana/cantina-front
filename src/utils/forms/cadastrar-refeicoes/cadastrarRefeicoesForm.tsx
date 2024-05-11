@@ -7,29 +7,19 @@ export default function cadastrarRefeicoesForm() {
           <div className="text-center p-8 uppercase text-cor3 font-semibold">
             <h2>Cadastro de Refeição</h2>
           </div>
-                      <div className="text-center p-8 uppercase text-cor3 font-semibold">
-                          <h2>Cadastro de Refeição</h2>
-                      </div>
-                      
-                      <div className="grid grid-cols-5 text-center gap-4 p-2 overflow-auto">
-                        <div className="flex flex-col gap-5">
-                          <h3 className="font-semibold">Refeição</h3>
-                          <div className="flex flex-col gap-3 m-auto">
-                
-                                <div  className="w-44">
-                                <input
-                            className="p-2 border border-gray-400 rounded-lg focus:outline-none focus:border-gray-600"
-                            placeholder="INSIRA O NOME"
-                        />
-                        </div>
-                          </div>
-                        </div>
-                        <div className="flex flex-col gap-5">
-                          <h3 className="font-semibold">Total de Alunos</h3>
-                          <div className="flex flex-col gap-3 m-auto">
-                          <input
-                            className="p-2 border border-gray-400 rounded-lg focus:outline-none focus:border-gray-600 text-black"
-                            placeholder="1"
+          <div className="grid grid-cols-5 text-center gap-4 p-2 overflow-auto">
+          <div className="flex flex-col gap-5">
+          <h3 className="font-semibold">Refeição</h3>
+          <div className="flex flex-col gap-3 m-auto">
+          <div  className="w-44">
+          <input className="p-2 border border-gray-400 rounded-lg focus:outline-none focus:border-gray-600" placeholder="INSIRA O NOME"/>
+          </div>
+          </div>
+          </div>
+          <div className="flex flex-col gap-5">
+          <h3 className="font-semibold">Total de Alunos</h3>
+          <div className="flex flex-col gap-3 m-auto">
+          <input disabled className="p-2 border border-gray-400 rounded-lg focus:outline-none focus:border-gray-600 text-black" placeholder="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1"
                         />
                           </div>
                         </div>
