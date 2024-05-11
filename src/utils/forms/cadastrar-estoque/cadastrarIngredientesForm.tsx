@@ -1,6 +1,7 @@
 'use client'
 import React, { useEffect } from "react";
 import useCadastrarIngredientesController from "./controller/cadastrarIngredientesController";
+import LoadingButtons from "@/components/LoadingButtons";
 
 export default function CadastrarIngredientesForm() {
   const {
@@ -15,6 +16,7 @@ export default function CadastrarIngredientesForm() {
     searchValue,
     showOptionsList,
     setShowOptionsList,
+    isLastIngredientComplete,
     nomesIngredientesLoaded,
     filteredNomesIngredientes,
     handleInputChangeAndClear,
@@ -27,11 +29,11 @@ export default function CadastrarIngredientesForm() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center h-svh py-10"  onClick={() => setShowOptionsList(Array(ingredientes.length).fill(false))}>
-      <h1 className="text-cor3 font-medium uppercase p-6">Cadastrar estoque</h1>
+    <div className="flex flex-col overflow-auto items-center h-svh py-10"  onClick={() => setShowOptionsList(Array(ingredientes.length).fill(false))}>
+      <h1 className="text-cor3 font-medium uppercase p-6 ">Cadastrar estoque</h1>
 
       {ingredientes.map((ingrediente, index) => (
-        <div key={index} className="grid grid-cols-[auto_6rem_auto_auto_auto_4rem] text-center gap-6 h-fit w-full px-16 py-3">
+        <div key={index} className="grid grid-cols-[auto_12rem_12rem_auto_4rem] text-center gap-6 h-fit w-full px-16 py-3">
           <div className="flex flex-col gap-2 relative">
             <label htmlFor={`genero_${index}`}>Nome do produto</label>
             <input
@@ -67,7 +69,7 @@ export default function CadastrarIngredientesForm() {
 
           {/* Quantidade */}
           <div className="flex flex-col gap-2">
-            <label htmlFor={`quantidade`}>Quantidade</label>
+            <label htmlFor={`quantidade`}>Quantidade (Kg)</label>
             <input
               className="p-2 text-center border border-gray-400 rounded-lg focus:outline-none focus:border-gray-600"
               id={`quantidade`}
@@ -79,29 +81,9 @@ export default function CadastrarIngredientesForm() {
             />
           </div>
 
-          {/* Unidade */}
-          <div className="flex flex-col gap-2">
-            <label htmlFor={`unidade`}>Unidade</label>
-            <select
-              className="p-2 border border-gray-400 rounded-lg focus:outline-none focus:border-gray-600 text-black"
-              id={`unidade`}
-              name={`unidade`}
-              value={ingrediente.unidade}
-              onChange={(e) => handleSelectChange(e, index)}
-            >
-              <option hidden>...</option>
-              <option value="embalagem">Embalagem</option>
-              <option value="kg">Kg</option>
-              <option value="frasco">Frasco</option>
-              <option value="cartela">Cartela</option>
-              <option value="unidade">Unidade</option>
-              <option value="pote">Pote</option>
-              <option value="maço">Maço</option>
-            </select>
-          </div>
 
           {/* Validade */}
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-2">
             <label htmlFor={`validade`}>Validade</label>
             <input
               className="p-2 border border-gray-400 rounded-lg focus:outline-none focus:border-gray-600"
@@ -135,7 +117,7 @@ export default function CadastrarIngredientesForm() {
           <div className="flex justify-center items-center">
             <button
               onClick={() => handleCancelarIngrediente(index)}
-              className="w-10 h-10 bg-red-600 text-white rounded-full focus:outline-none focus:border-gray-600"
+              className="w-7 h-7 bg-red-600 text-white rounded-full focus:outline-none focus:border-gray-600"
             >
               x
             </button>
@@ -146,7 +128,8 @@ export default function CadastrarIngredientesForm() {
       <div className="mt-4 flex justify-center">
         <button
           onClick={handleAddIngrediente}
-          className="w-10 h-10 p-2 bg-cor4 border border-gray-300 hover:bg-green-600 text-white rounded-full focus:outline-none focus:border-gray-600"
+          disabled={!isLastIngredientComplete()}
+          className={`w-10 h-10 p-2 border rounded-full bg-cor4 border-gray-300 hover:bg-green-600 text-white focus:outline-none focus:border-gray-600 ${(!isLastIngredientComplete()) ? "cursor-not-allowed opacity-50" : ""}`}
         >
           +
         </button>
@@ -155,9 +138,9 @@ export default function CadastrarIngredientesForm() {
       <button
         onClick={handleSubmit}
         disabled={!formValid || loading}
-        className={`w-80 p-2 mt-10 border bg-cor4 border-gray-300 hover:bg-green-600 text-white rounded-lg focus:outline-none focus:border-gray-600 ${(!formValid || loading) ? "cursor-not-allowed opacity-50" : ""}`}
+        className={`w-80 h-10 p-2 mt-10 border bg-cor4 border-gray-300 hover:bg-green-600 text-white rounded-lg focus:outline-none focus:border-gray-600 ${(!formValid || loading) ? "cursor-not-allowed opacity-50" : ""}`}
       >
-        {loading ? "Processando..." : "Cadastrar"}
+        {loading ? <LoadingButtons /> : "Cadastrar"}
       </button>
     </div>
   );

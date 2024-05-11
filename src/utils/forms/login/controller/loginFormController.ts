@@ -18,8 +18,8 @@ const useLoginFormController = () => {
     const [loading, setLoading] = useState(false);
 
     const perfilRoutes: { [key: string]: string } = {
-        nutricionista: "/nutricionista/home/",
-        escola: "/escola/home/",
+        nutricionista: "/nutricionista/",
+        escola: "/escola/",
     };
 
     const updateUser = (fieldName: string, value: string) => {
@@ -40,7 +40,7 @@ const useLoginFormController = () => {
             const route = perfilSelecionado && perfilSelecionado in perfilRoutes ? perfilRoutes[perfilSelecionado] : "/home";
             router.push(route);
         } catch (error) {
-            console.log("Login failed");
+            alert("Login failed");
 
         } finally {
             setLoading(false);
