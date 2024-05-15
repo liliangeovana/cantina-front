@@ -18,7 +18,7 @@ export default function LoginPage() {
         <Image alt="logo" src={logo} style={{ height: '100vh',objectFit: 'fill' }}/>
       </div>
 
-      <div className="w-1/2 p-6">
+      <div className="flex flex-col justify-center items-center w-1/2 p-6">
         <Profiles handleFormChange={handlePerfilChange} />
         <LoginForm />
       </div>
