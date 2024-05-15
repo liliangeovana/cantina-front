@@ -34,7 +34,7 @@ const useSchoolRegisterController = () => {
             setLoading(true);
             const response = await axios.post("/api/users/schoolRegister", school);
             console.log("Cadastro feito com sucesso", response.data);
-            alert('Cadastro realizado. Aguarde a liberação de acesso.');
+            alert('Cadastro realizado.');
             router.push("/");
         } catch (error) {
             console.log('Cadastro falhou.', error);

@@ -23,29 +23,15 @@ const useCadastrarIngredientesController = () => {
   // Trazendo os nomes dos ingredientes cadastrados pelas nutricionistas
   const { nomesIngredientes } = useBuscarNomesIngredientesController();
 
-  // Função para lidar com a mudança de entrada de data
-const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+ // Função para lidar com a mudança de entrada de texto
+ const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
   const { name, value } = e.target;
-  let adjustedValue = value;
-  
-  // Adiciona um dia à data para compensar a diferença de fuso horário
-  if (name === 'validade') {
-    const date = new Date(value);
-    date.setDate(date.getDate() + 1);
-    
-    // Ajusta manualmente a data para o formato YYYY-MM-DD
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Adiciona zero à esquerda se for necessário
-    const day = String(date.getDate()).padStart(2, '0'); // Adiciona zero à esquerda se for necessário
-    adjustedValue = `${year}-${month}-${day}`;
-  }
-
   const newIngredientes = [...ingredientes];
-  newIngredientes[index] = { ...newIngredientes[index], [name]: adjustedValue };
-
-
+  newIngredientes[index] = { ...newIngredientes[index], [name]: value };
+  
   setIngredientes(newIngredientes);
 };
+
   // Função para lidar com a mudança de seleção
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>, index: number) => {
     const { name, value } = e.target;

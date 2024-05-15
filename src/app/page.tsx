@@ -14,11 +14,12 @@ export default function LoginPage() {
 
   return (
     <div className="flex flex-row">
+      <title>Cantina Tech | Login</title>
       <div className="w-1/2">
         <Image alt="logo" src={logo} style={{ height: '100vh',objectFit: 'fill' }}/>
       </div>
 
-      <div className="flex flex-col justify-center items-center w-1/2 p-6">
+      <div className="flex flex-col justify-center items-center w-1/2 p-6 overflow-auto">
         <Profiles handleFormChange={handlePerfilChange} />
         <LoginForm />
       </div>
