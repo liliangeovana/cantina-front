@@ -2,11 +2,15 @@
 import React, { useEffect } from 'react';
 import MenuNutri from '@/components/MenuNutri';
 import useCadastrarRefeicaoNutriController from './controller/cadastrarRefeicaoNutriController';
+import LoadingButtons from '@/components/LoadingButtons';
 
 const NutriCadastroRefeicao = () => {
     const {
         refeicao,
         ingrediente,
+        loading,
+        formValid,
+        setFormValid,
         handleInputChange,
         handleSelectChange,
         handleAddIngredientes,
@@ -80,10 +84,11 @@ const NutriCadastroRefeicao = () => {
                         </div>
 
                         <button
-                            className='w-40 bg-cor4 p-1 rounded-md text-white hover:bg-green-600'
+                            className={`w-40 h-10 p-2 border bg-cor4 border-gray-300 hover:bg-green-600 text-white rounded-lg focus:outline-none focus:border-gray-600 ${(!formValid || loading) ? "cursor-not-allowed opacity-50" : ""}`}
+                            disabled={!formValid || loading}
                             onClick={handleSubmit}
                         >
-                            Cadastrar
+                            {loading ? <LoadingButtons /> : "Cadastrar"}
                         </button>
                     </section>
 

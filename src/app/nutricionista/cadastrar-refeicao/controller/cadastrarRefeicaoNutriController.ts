@@ -1,4 +1,5 @@
-import { useState, ChangeEvent } from "react";
+'use client'
+import { useState, useEffect, ChangeEvent } from "react";
 import axios from "axios";
 
 interface Ingrediente {
@@ -70,6 +71,15 @@ const useCadastrarRefeicaoNutriController = () => {
         setIngrediente(newIngredientes);
       };
 
+      useEffect(() => {
+        const atLeastOneIngredient = ingrediente.length > 0;
+        const allIngredientsValid = ingrediente.every(item => {
+          const { nomeIngrediente, quantidade } = item;
+          return nomeIngrediente && quantidade;
+        });
+        setFormValid(atLeastOneIngredient && allIngredientsValid);
+      }, [ingrediente]);
+
       const handleSubmit = async () => {
         try {
 
@@ -82,10 +92,7 @@ const useCadastrarRefeicaoNutriController = () => {
 
             setLoading(true);
             
-            const response = await axios.post("/api/refeicoes/nutri/register", dadosParaEnviar);
-            console.log(response.data);
-            console.log("Refeição cadastrada com sucesso:", response.data);
-            console.log("Resposta do backend:", response.data);
+            const response = await axios.post("/api/refeicoes/nutri/register", dadosParaEnviar);            
             alert("Refeição cadastrada com sucesso");
             window.location.reload();
         } catch (error) {
@@ -101,6 +108,9 @@ const useCadastrarRefeicaoNutriController = () => {
     return {
         refeicao,
         ingrediente,
+        formValid,
+        setFormValid,
+        loading,
         handleInputChange,
         handleSelectChange,
         handleAddIngredientes, 
