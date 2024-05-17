@@ -7,7 +7,7 @@ const useBuscarEstoquesController = () => {
 
   const fetchEstoques = async () => {
     try {
-      const response = await axios.get("/api/escolas/estoques/");
+      const response = await axios.get("/api/escolas/estoques");
       const data = response.data.data;
       setEstoques(data);
     } catch (error) {
