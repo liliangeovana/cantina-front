@@ -15,7 +15,6 @@ const VisualizarEstoque = () => {
   // Dividir os itens do estoque em duas listas: uma para os gêneros e outra para as quantidades e validades
   const generos = estoque.map(item => item.genero);
   const quantidadesEValidades = estoque.map(item => ({
-    quantidadeGramas: item.quantidadeEstoqueGramas,
     quantidadeRecebida: item.quantidadeRecebida,
     validade: item.validade,
     // Verificando se a validade está vencida
@@ -68,7 +67,7 @@ const VisualizarEstoque = () => {
                     <div className="flex flex-col gap-3 m-auto">
                       {quantidadesEValidades.map((item, index) => (
                         <div className="bg-white w-44 p-2 rounded-md shadow" key={index}> {/* Add key prop */}
-                          <p>{item.quantidadeGramas}g</p>
+                          <p>{item.quantidadeRecebida}g</p>
                         </div>
                       ))}
                     </div>

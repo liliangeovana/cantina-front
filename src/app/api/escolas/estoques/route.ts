@@ -3,7 +3,7 @@ import Ingrediente from "@/models/ingredientes/ingredientesModel";
 import schoolModel from "@/models/users/schoolModel";
 import { connect } from "../../../../../db";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
     try {
         await connect();
 
@@ -18,9 +18,6 @@ export async function GET() {
             // Buscando os ingredientes associados à escola
             const ingredientes = await Ingrediente.find({ school: school._id });
 
-            // Log de debug para verificar os ingredientes recuperados
-            console.log(`Escola: ${school.nome}, Ingredientes: ${JSON.stringify(ingredientes)}`);
-
             // Adicionando as informações da escola e ingredientes ao array
             schoolsWithIngredients.push({
                 school: {
@@ -31,16 +28,9 @@ export async function GET() {
             });
         }
 
-        return new NextResponse(JSON.stringify({
+        return NextResponse.json({
             message: "Escolas e ingredientes recuperados com sucesso",
             data: schoolsWithIngredients
-        }), {
-            headers: {
-                'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
-                'Pragma': 'no-cache',
-                'Expires': '0',
-                'Surrogate-Control': 'no-store'
-            }
         });
     } catch (error) {
         console.error("Erro ao recuperar escolas e ingredientes:", error);

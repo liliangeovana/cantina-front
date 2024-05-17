@@ -106,7 +106,7 @@ const NutriHomePage = () => {
                     <div className="flex flex-col gap-3 m-auto">
                       {estoquesEscolas.find((item: any) => item.school._id === escolaSelecionada)?.ingredientes.map((ingrediente: any, index: number) => (
                         <div key={index} className="bg-white w-44 p-2 rounded-md shadow">
-                          <p>{ingrediente.quantidadeEstoqueGramas}g <span className="text-gray-900 opacity-70">({ingrediente.quantidadeRecebida}Kg)</span></p>
+                          <p>{ingrediente.quantidadeRecebida}g</p>
                         </div>
                       ))}
                     </div>
@@ -125,7 +125,7 @@ const NutriHomePage = () => {
                     <div className="flex flex-col gap-3 m-auto">
                       {estoquesEscolas.find((item: any) => item.school._id === escolaSelecionada)?.ingredientes.map((ingrediente: any, index: number) => (
                         <div key={index} className="bg-white w-44 p-2 rounded-md shadow">
-                          <p>{ingrediente.quantidadeEstoqueGramas}g</p>
+                          <p>{ingrediente.quantidadeRecebida}g</p>
                         </div>
                       ))}
                     </div>

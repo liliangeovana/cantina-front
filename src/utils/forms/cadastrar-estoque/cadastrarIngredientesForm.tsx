@@ -69,7 +69,7 @@ export default function CadastrarIngredientesForm() {
 
           {/* Quantidade */}
           <div className="flex flex-col gap-2">
-            <label htmlFor={`quantidade`}>Quantidade (Kg)</label>
+            <label htmlFor={`quantidade`}>Quantidade (g)</label>
             <input
               className="p-2 text-center border border-gray-400 rounded-lg focus:outline-none focus:border-gray-600"
               id={`quantidade`}
