@@ -6,10 +6,11 @@ const useBuscarNomesIngredientesController = () => {
 
   const fetchNomesIngredientes = async () => {
     try {
-      const response = await axios.get("/api/produtos/get/");
-      const produtos = response.data;
-      const nomes = produtos.map((produto: any) => produto.genero);
-      setNomesIngredientes(nomes);
+      const response = await axios.get("/api/refeicoes/ingredientes/get");
+      const produtos = response.data.map((produto: any) => produto.nomeIngrediente);
+      console.log('controler ',produtos);
+      
+      setNomesIngredientes(produtos); 
     } catch (error) {
       console.error("Erro ao buscar nomes dos ingredientes:", error);
     }

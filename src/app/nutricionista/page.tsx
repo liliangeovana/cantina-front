@@ -87,13 +87,13 @@ const NutriHomePage = () => {
             {/* Renderização condicional dos campos ou da mensagem */}
             {ingredientesExistentes ? (
               <div>
-                <div className="grid grid-cols-5 text-center gap-4 p-2">
+                <div className="grid grid-cols-[20rem_auto_auto_auto_auto] text-center gap-6 px-6">
                   {/* INGREDIENTES */}
                   <div className="flex flex-col gap-5">
                     <h3 className="font-semibold">Ingredientes</h3>
                     <div className="flex flex-col gap-3 m-auto">
                       {estoquesEscolas.find((item: any) => item.school._id === escolaSelecionada)?.ingredientes.map((ingrediente: any, index: number) => (
-                        <div key={index} className="bg-white w-44 p-2 rounded-md shadow">
+                        <div key={index} className="bg-white w-64 p-2 rounded-md shadow">
                           <p>{ingrediente.genero}</p>
                         </div>
                       ))}

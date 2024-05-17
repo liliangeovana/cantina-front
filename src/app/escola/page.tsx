@@ -57,7 +57,7 @@ const VisualizarEstoque = () => {
                     <h2 className="text-xl font-semibold">Estoque</h2>
                     <div className="flex flex-col gap-3 m-auto">
                       {generos.map((genero, index) => (
-                        <div className="bg-white w-44 p-2 rounded-md shadow" key={index}> {/* Add key prop */}
+                        <div className="bg-white w-72 p-2 rounded-md shadow" key={index}> {/* Add key prop */}
                           <p>{genero}</p>
                         </div>
                       ))}
