@@ -25,9 +25,6 @@ export async function POST(request: NextRequest) {
                 const { genero, quantidadeRecebida, validade, classificacao } = ingredienteData;
             
 
-                // Cálculo da quantidade em gramas a partir da quantidade em quilogramas
-                const quantidadeEstoqueGramas = quantidadeRecebida * 1000; // 1 kg = 1000 g
-
                 // Verifica se já existe um ingrediente com o mesmo gênero e validade associado à escola do usuário
                 const existingIngredient = await Ingrediente.findOne({
                     genero,
@@ -44,7 +41,6 @@ export async function POST(request: NextRequest) {
                 const newIngrediente = new Ingrediente({
                     genero,
                     quantidadeRecebida,
-                    quantidadeEstoqueGramas,
                     validade,
                     classificacao,
                     school: schoolObj._id,
@@ -66,9 +62,6 @@ export async function POST(request: NextRequest) {
             const { genero, quantidadeRecebida,   validade, classificacao } = reqBody;
 
 
-            // Cálculo da quantidade em gramas a partir da quantidade em quilogramas
-            const quantidadeEstoqueGramas = quantidadeRecebida * 1000; // 1 kg = 1000 g
-
             // Verifica se já existe um ingrediente com o mesmo gênero e validade associado à escola do usuário
             const existingIngredient = await Ingrediente.findOne({
                 genero,
@@ -86,7 +79,6 @@ export async function POST(request: NextRequest) {
             const newIngrediente = new Ingrediente({
                 genero,
                 quantidadeRecebida,
-                quantidadeEstoqueGramas,
                 validade,
                 classificacao,
                 school: schoolObj._id,
