@@ -3,11 +3,9 @@ import Ingrediente from "@/models/ingredientes/ingredientesModel";
 import schoolModel from "@/models/users/schoolModel";
 import { connect } from "../../../../../db";
 
-connect();
-
-export async function GET(request: NextRequest) {
+export async function GET() {
     try {
-
+        await connect();
         // Buscando todas as escolas
         const schools = await schoolModel.find({}, '_id nome').sort({ nome: 1 });
 
