@@ -19,10 +19,6 @@ const nutriMealModelSchema = new mongoose.Schema(
       type: String,
       required: true
     },
-    turno: {
-      type: String,
-      required: true
-    },
     descricao: {
       type: String,
       required: true
