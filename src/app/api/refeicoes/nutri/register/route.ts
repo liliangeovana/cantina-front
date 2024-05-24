@@ -3,7 +3,7 @@ import nutriMealModel from "@/models/refeicoes/nutriMealModel";
 
 export async function POST(request: NextRequest) {
     try {
-        const { nomeRefeicao, turnoRefeicao, descricaoPreparo, ingredientes } = await request.json();
+        const { nomeRefeicao, descricaoPreparo, ingredientes } = await request.json();
 
         // Verifique se os ingredientes são um array
         if (!Array.isArray(ingredientes)) {
@@ -20,7 +20,6 @@ export async function POST(request: NextRequest) {
         // Crie um novo registro de refeição
         const novaRefeicao = new nutriMealModel({
             nome: nomeRefeicao,
-            turno: turnoRefeicao,
             descricao: descricaoPreparo,
             ingredientes: ingredientes // Aqui você substitui os ingredientes da refeição pelos que estão sendo recebidos
         });

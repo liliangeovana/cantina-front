@@ -9,11 +9,9 @@ export async function GET(request: NextRequest) {
         await connect();
         // Obtendo o ID do usuário do token
         const userId = await getDataFromToken(request);
-        console.log("ID do usuário:", userId);
 
         // Buscando a escola associada ao usuário logado
         const schoolObj = await schoolModel.findOne({ _id: userId });
-        console.log("Escola associada:", schoolObj);
 
         if (!schoolObj) {
             console.error("Escola não encontrada para o usuário:", userId);

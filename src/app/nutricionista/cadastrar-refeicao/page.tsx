@@ -43,7 +43,7 @@ const NutriCadastroRefeicao = () => {
                             <section className="flex flex-col gap-8 items-center">
                                 <div className='w-full flex flex-row gap-6 items-center justify-center'>
                                     {/**NOME REFEIÇÃO */}
-                                    <div className="w-80 flex flex-col gap-2">
+                                    <div className="w-96 flex flex-col gap-2">
                                         <label
                                             className='font-semibold text-sm'
                                             htmlFor="nomeRefeicao">Refeição</label>
@@ -56,24 +56,7 @@ const NutriCadastroRefeicao = () => {
                                             onChange={handleInputChange}
                                         />
                                     </div>
-                                    {/** TURNO*/}
-                                    <div className="w-32 flex flex-col gap-2">
-                                        <label
-                                            className='font-semibold text-sm'
-                                            htmlFor="turnoRefeicao">Turno</label>
-                                        <select
-                                            className='w-32 p-1 rounded-md focus:outline-none  border border-gray-400 focus:boder-2 focus:border-cor4'
-                                            name={`turnoRefeicao`}
-                                            id={`turnoRefeicao`}
-                                            value={refeicao.turnoRefeicao}
-                                            onChange={handleSelectChange}
-                                        >
-                                            <option hidden>...</option>
-                                            <option value="Matutino">Matutino</option>
-                                            <option value="Vespertino">Vespertino</option>
-                                            <option value="Ambos">Ambos</option>
-                                        </select>
-                                    </div>
+                                    
                                 </div>
                                 {/** DESCRIÇÃO */}
                                 <div className="w-96 flex flex-col gap-2">
@@ -105,7 +88,7 @@ const NutriCadastroRefeicao = () => {
                                 <thead>
                                     <tr>
                                         <th className="text-center font-semibold text-sm">Ingrediente</th>
-                                        <th className="text-center font-semibold text-sm">Percapita (g)</th>
+                                        <th className="text-center font-semibold text-sm">Quantidade (g)</th>
                                     </tr>
                                 </thead>
                                 <tbody>

@@ -9,7 +9,6 @@ interface Ingrediente {
 
 interface Refeicao {
     nomeRefeicao: string;
-    turnoRefeicao: string;
     descricaoPreparo: string;
     ingredientes: Ingrediente[];
 }
@@ -19,7 +18,6 @@ const useCadastrarRefeicaoNutriController = () => {
     const [formValid, setFormValid] = useState(false);
     const [refeicao, setRefeicao] = useState<Refeicao>({
         nomeRefeicao: "",
-        turnoRefeicao: "",
         descricaoPreparo: "",
         ingredientes: []
     });
