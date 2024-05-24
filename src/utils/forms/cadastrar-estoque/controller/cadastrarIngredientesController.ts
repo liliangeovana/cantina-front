@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import useBuscarNomesIngredientesController from "./getIngredientesController";
-
+import Swal from "sweetalert2";
 // Definição da interface para representar a estrutura de um ingrediente
 interface Ingrediente {
   genero: string;
@@ -53,13 +53,21 @@ const useCadastrarIngredientesController = () => {
       setLoading(true);
       for (const ingrediente of ingredientes) {
         const response = await axios.post("/api/ingredientes/register", ingrediente);
-        console.log("Ingrediente cadastrado com sucesso:", response.data);
       }
-      alert("Cadastro feito com sucesso");
+      Swal.fire({
+        icon: "success",
+        title: "Cadastrado com sucesso!",
+        showConfirmButton: false,
+        timer: 10500
+      });
       window.location.reload();
     } catch (error) {
       console.error('Cadastro falhou:', error);
-      alert('Cadastro falhou.');
+      Swal.fire({
+        icon: "error",
+        title: "ERRO...",
+        text: "Falha ao cadastrar produto!",
+      });
     } finally {
       setLoading(false);
     }

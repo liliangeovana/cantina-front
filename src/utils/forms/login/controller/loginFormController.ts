@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Swal from 'sweetalert2';
 import axios from "axios";
 
 interface LoginFormData {
@@ -40,7 +41,11 @@ const useLoginFormController = () => {
             const route = perfilSelecionado && perfilSelecionado in perfilRoutes ? perfilRoutes[perfilSelecionado] : "/home";
             router.push(route);
         } catch (error) {
-            alert("Login failed");
+            Swal.fire({
+                icon: "error",
+                title: "Erro...",
+                text: "Login falhou, verifique os campos preenchidos e o perfil selecionado",
+              });
 
         } finally {
             setLoading(false);
