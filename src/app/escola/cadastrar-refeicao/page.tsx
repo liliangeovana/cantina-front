@@ -313,13 +313,10 @@ const EscolaCadastroRefeicao = () => {
                                         id="descricaoPreparo"
                                         name="descricaoPreparo"
                                         value={selectedRefeicao?.descricao || ''}
-                                        onChange={(e) => {
-                                            const newValue = isAddNewRefeicao ? e.target.value : selectedRefeicao ? selectedRefeicao.descricao : '';
-                                            setSelectedRefeicao({
-                                                ...selectedRefeicao!,
-                                                descricao: newValue
-                                            });
-                                        }}
+                                        onChange={(e) => setSelectedRefeicao({
+                                            ...selectedRefeicao!,
+                                            descricao: e.target.value
+                                        })}
                                     />
                                 </div>
                             </div>
