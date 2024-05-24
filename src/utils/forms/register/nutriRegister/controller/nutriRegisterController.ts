@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation"; // Use useRouter em vez de next/navigation
 import axios from "axios";
+import Swal from "sweetalert2";
 
 interface NutriFormData {
     profile: string;
@@ -34,11 +35,19 @@ const useNutriRegisterController = () => {
         try {
             setLoading(true);
             const response = await axios.post("./api/users/nutriRegister", nutri);
-            alert("Cadastro feito com sucesso");
+            Swal.fire({
+                icon: "success",
+                title: "Cadastrado com sucesso!",
+                showConfirmButton: false,
+                timer: 2000
+              });
             router.push("/");
         } catch (error) {
-            console.log('Cadastro falhou.', error);
-            alert('Cadastro falhou.');
+            Swal.fire({
+                icon: "error",
+                title: "Erro",
+                text: "Falha ao cadastrar",
+              });
         } finally {
             setLoading(false);
         }
