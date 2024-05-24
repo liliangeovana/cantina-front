@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { log } from "console";
 
 const useBuscarEstoquesController = () => {
   const [estoquesEscolas, setEstoques] = useState<any[]>([]);

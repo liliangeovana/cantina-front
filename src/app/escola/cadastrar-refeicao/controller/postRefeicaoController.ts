@@ -26,20 +26,24 @@ const useCadastrarRefeicaoEscolaController = () => {
     const handleSubmit = async (refeicao: Refeicao) => {
         try {
             setLoading(true);
-
+    
+            // Verifica se há observação escrita
+            const observacaoPresente = refeicao.observacao.trim().length > 0;
+    
+            // Cria um objeto com os dados da refeição para enviar
             const dadosParaEnviar = {
                 nomeRefeicao: refeicao.nomeRefeicao,
                 turnoRefeicao: refeicao.turnoRefeicao,
                 quantidadeAlunos: refeicao.quantidadeAlunos,
                 descricaoPreparo: refeicao.descricaoPreparo,
-                padraoMantido: refeicao.padraoMantido,
+                padraoMantido: !observacaoPresente, // Define refeicaoPadrao como false se houver observação presente
                 observacao: refeicao.observacao,
                 ingredientes: refeicao.ingredientes,
                 ingredientesAdicionados: refeicao.ingredientesAdicionados.filter(ingrediente => ingrediente.nomeIngrediente && ingrediente.quantidade),
             };
-
+    
             console.log("Dados a serem enviados:", dadosParaEnviar);
-
+    
             const response = await axios.post("/api/refeicoes/escolas/register", dadosParaEnviar);
             alert("Refeição cadastrada com sucesso");
             window.location.reload();
@@ -50,6 +54,7 @@ const useCadastrarRefeicaoEscolaController = () => {
             setLoading(false);
         }
     };
+    
 
     return {
         handleSubmit,

@@ -5,8 +5,11 @@ import MenuEscola from '@/components/MenuEscola';
 import useGetRefeicaoPadraController from './controller/getRefeicaoPadraoController';
 import useUpdateRefeicaoController from './controller/updateRefeicaoPadraoController';
 import useCadastrarRefeicaoEscolaController from './controller/postRefeicaoController';
+import useGetIngredientesEscolaLogadaController from '../controller/getIngredientesEscolaLogadaController';
 
 const EscolaCadastroRefeicao = () => {
+    const { estoque } = useGetIngredientesEscolaLogadaController();
+
     const {
         handleSubmit,
         loading: postLoading
@@ -30,23 +33,59 @@ const EscolaCadastroRefeicao = () => {
         handleSelectChange,
     } = useGetRefeicaoPadraController();
 
+    const [estoqueValue, setEstoqueValue] = useState('');
     const [searchValue, setSearchValue] = useState('');
     const dropdownRef = useRef(null);
-    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [dropdownOpen, setDropdownOpen] = useState<number | null>(null);
+    const [dropdownIngredienteOpen, setDropdownIngredienteOpen] = useState<number | null>(null);
+    const [dropdownIngredienteAdicionadoOpen, setDropdownIngredienteAdicionadoOpen] = useState<number | null>(null);
     const [isEditing, setIsEditing] = useState(false);
+    const [isAddNewRefeicao, setIsAddNewRefeicao] = useState(false);
     const [observacao, setObservacao] = useState('');
     const [observacaoModalVisible, setObservacaoModalVisible] = useState(false);
 
-    useEffect(() => {
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, []);
+    const defaultValues = {
+        nomeRefeicao: '',
+        quantidadeAlunos: '',
+        turnoRefeicao: '',
+        descricaoPreparo: '',
+    };
 
-    const handleClickOutside = (event: any) => {
-        if (dropdownOpen && dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-            setDropdownOpen(false);
+    useEffect(() => {
+        if (isAddNewRefeicao) {
+            setSelectedRefeicao(null); // Limpe a seleção da refeição
+            setIngredientesAdicionados([]); // Limpe os ingredientes adicionados
+            setSearchValue(''); // Limpe o valor de pesquisa
+            setIsEditing(false); // Desative o modo de edição
+            setObservacao(''); // Limpe a observação
+        }
+    }, [isAddNewRefeicao]);
+
+    const handleEstoqueSelect = (opcao: any, ingredienteId: any, isAddedIngredient: boolean = false, addedIndex: number = -1) => {
+        if (!isAddedIngredient) {
+            if (selectedRefeicao) {
+                const ingredienteIndex = selectedRefeicao.ingredientes.findIndex(ingrediente => ingrediente._id === ingredienteId);
+                if (ingredienteIndex !== -1) {
+                    const novosIngredientes = [...selectedRefeicao.ingredientes];
+                    novosIngredientes[ingredienteIndex] = {
+                        ...novosIngredientes[ingredienteIndex],
+                        nomeIngrediente: opcao.genero
+                    };
+                    setSelectedRefeicao({
+                        ...selectedRefeicao,
+                        ingredientes: novosIngredientes
+                    });
+                    setDropdownIngredienteOpen(null); // Fechar o dropdown
+                }
+            }
+        } else {
+            const novosIngredientes = [...ingredientesAdicionados];
+            novosIngredientes[addedIndex] = {
+                ...novosIngredientes[addedIndex],
+                nomeIngrediente: opcao.genero
+            };
+            setIngredientesAdicionados(novosIngredientes);
+            setDropdownIngredienteAdicionadoOpen(null);
         }
     };
 
@@ -140,27 +179,40 @@ const EscolaCadastroRefeicao = () => {
                 <MenuEscola />
             </section>
 
-            <div className='w-full flex flex-col overflow-auto py-10'>
+            <div className='w-full flex flex-col overflow-auto p-4'>
                 <div className='flex flex-col'>
-                    <div className='flex flex-row'>
-                        <div className='w-full flex justify-center items-center text-center uppercase text-cor3 font-semibold'>
-                            <p>Cadastrar Refeições</p>
+                    <div className='w-full text-center uppercase text-cor3 text-md font-semibold'>
+                        <p>Cadastrar refeição</p>
+                    </div>
+                    <div className='flex flex-row justify-between px-10'>
+                        <div className='hidden'>
+                            <button
+                                onClick={() => {
+                                    setIsAddNewRefeicao(!isAddNewRefeicao)
+                                    if (isAddNewRefeicao) {
+                                        toggleObservacaoModal(); // Abre o modal somente ao finalizar a edição
+                                    }
+                                }}
+                                className="text-sm p-2 border bg-cor3 hover:bg-blue-700 text-white rounded-lg focus:outline-none focus:border-gray-600"
+                            >
+                                {isAddNewRefeicao ? "Finalizar Edição" : "Adicionar refeição não cadastrada"}
+                            </button>
                         </div>
-                        {selectedRefeicao && selectedRefeicao.ingredientes.length > 0 && Number(quantidadeAlunos) > 0 && (
-                            <div className='w-full flex justify-end pr-8'>
-                                <button
-                                    onClick={() => {
-                                        setIsEditing(!isEditing); // Alterna o estado de edição
-                                        if (isEditing) {
-                                            toggleObservacaoModal(); // Abre o modal somente ao finalizar a edição
-                                        }
-                                    }}
-                                    className="wrapped text-sm p-2 border bg-red-600 hover:bg-red-500 text-white rounded-lg focus:outline-none focus:border-gray-600"
-                                >
-                                    {isEditing ? "Finalizar Edição" : "Editar refeição"}
-                                </button>
-                            </div>
-                        )}
+
+                        <div className='flex w-full justify-end'>
+                            <button
+                                onClick={() => {
+                                    setIsEditing(!isEditing); // Alterna o estado de edição
+                                    if (isEditing) {
+                                        toggleObservacaoModal(); // Abre o modal somente ao finalizar a edição
+                                    }
+                                }}
+                                className=" text-sm p-2 border bg-red-600 hover:bg-red-500 text-white rounded-lg focus:outline-none focus:border-gray-600"
+                            >
+                                {isEditing ? "Finalizar Edição" : "Editar refeição"}
+                            </button>
+                        </div>
+
 
                         {observacaoModalVisible && (
                             <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
@@ -200,11 +252,7 @@ const EscolaCadastroRefeicao = () => {
                                             className='w-full p-1 rounded-md focus:outline-none border border-gray-400 focus:border-2 focus:border-cor4'
                                             id="nomeRefeicao"
                                             name="nomeRefeicao"
-                                            value={
-                                                selectedRefeicao && !dropdownOpen
-                                                    ? selectedRefeicao.nome
-                                                    : searchValue
-                                            }
+                                            value={searchValue}
                                             onChange={(e) => setSearchValue(e.target.value)}
                                             onFocus={() => setDropdownOpen(true)}
                                             onBlur={handleNomeRefeicaoBlur}
@@ -266,10 +314,13 @@ const EscolaCadastroRefeicao = () => {
                                         id="descricaoPreparo"
                                         name="descricaoPreparo"
                                         value={selectedRefeicao?.descricao || ''}
-                                        onChange={(e) => setSelectedRefeicao({
-                                            ...selectedRefeicao!,
-                                            descricao: e.target.value
-                                        })}
+                                        onChange={(e) => {
+                                            const newValue = isAddNewRefeicao ? e.target.value : selectedRefeicao ? selectedRefeicao.descricao : '';
+                                            setSelectedRefeicao({
+                                                ...selectedRefeicao!,
+                                                descricao: newValue
+                                            });
+                                        }}
                                     />
                                 </div>
                             </div>
@@ -285,28 +336,56 @@ const EscolaCadastroRefeicao = () => {
                                         <label className='font-semibold m-auto text-sm' htmlFor="ingredientes">Ingredientes</label>
                                         <label className='font-semibold  text-sm' htmlFor="ingredientes">Quantidade (g)</label>
                                     </div>
-                                    {selectedRefeicao?.ingredientes.map((ingrediente, index) => (
+                                    {!selectedRefeicao && (
+                                        <div className='w-96 h-80 flex items-center justify-center' >
+                                            <p className='pl-20 texte-center font-semibold text-red-700'>Selecione uma refeição</p>
+                                        </div>
+                                    )}
+                                    {selectedRefeicao?.ingredientes.map((ingrediente, index) =>  (
                                         <div key={ingrediente._id} className='flex flex-row gap-2 items-center'>
                                             <div>
-                                                <input
-                                                    className='w-64 bg-white p-1 rounded-md focus:outline-none border border-gray-400 focus:border-2 focus:border-cor4'
-                                                    type="text"
-                                                    value={ingrediente.nomeIngrediente}
-                                                    onChange={(e) => handleIngredientChange(e, ingrediente._id)}
-                                                    disabled={!isEditing}
-                                                />
+                                                <div>
+                                                    <input
+                                                        className='w-64 bg-white p-1 rounded-md focus:outline-none border border-gray-400 focus:border-2 focus:border-cor4'
+                                                        type="text"
+                                                        value={ingrediente.nomeIngrediente}
+                                                        onChange={(e) => handleIngredientChange(e, ingrediente._id)}
+                                                        disabled={!isEditing}
+                                                        onFocus={() => setDropdownIngredienteOpen(index)}
+                                                    />
+                                                </div>
+                                                {dropdownIngredienteOpen === index && (
+                                                    <div className='relative'>
+                                                        <div className='absolute z-10 w-96 bg-white border border-gray-300 shadow-lg'>
+                                                            {estoque.map((opcao) => (
+                                                                <div
+                                                                    key={opcao._id}
+                                                                    className='cursor-pointer p-2 hover:bg-gray-200'
+                                                                    onMouseDown={() => handleEstoqueSelect(opcao, ingrediente._id)}
+                                                                >
+                                                                    {opcao.genero}
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                )}
                                             </div>
-                                            {Number(quantidadeAlunos) > 0 && (
+                                            {Number(quantidadeAlunos) > 0 ? (
                                                 <div>
                                                     <input
                                                         className='w-32 bg-white text-center p-1 rounded-md focus:outline-none border border-gray-400 focus:border-2 focus:border-cor4'
                                                         type="number"
+                                                        placeholder='0'
                                                         value={Number(ingrediente.quantidade) * Number(quantidadeAlunos)}
                                                         onChange={(e) => handleIngredientChange(e, ingrediente._id)}
                                                         disabled={!isEditing}
                                                     />
                                                 </div>
-                                            )}
+                                            ) : (
+                                                <div className='w-32' >
+                                                    <p className='text-center text-gray-500'>0</p>
+                                                </div>
+                                            )}                                            
                                             {isEditing && (
                                                 <div className='w-20'>
                                                     <button
@@ -324,7 +403,7 @@ const EscolaCadastroRefeicao = () => {
                                             <h2 className='font-semibold m-auto text-sm py-3' >Ingredientes Adicionados:</h2>
                                             <ul>
                                                 {ingredientesAdicionados.map((ingrediente, index) => (
-                                                    <span className='w-52 rounded-md border border-gray-400 flex flex-row justify-between p-2 bg-white mt-1' key={index}>
+                                                    <span className='w-80 rounded-md border border-gray-400 flex flex-row justify-between p-2 bg-white mt-1' key={index}>
                                                         <span>{ingrediente.nomeIngrediente}</span>
                                                         <span> {ingrediente.quantidade}g</span>
                                                     </span>
@@ -342,16 +421,34 @@ const EscolaCadastroRefeicao = () => {
                                                 <p className='font-semibold text-sm'>Adicionados: </p>
                                                 {ingredientesAdicionados.map((ingrediente, index) => (
                                                     <div key={index} className='flex flex-row gap-2 items-center'>
-                                                        <input
-                                                            className='w-72 bg-white p-1 rounded-md focus:outline-none border border-gray-400 focus:border-2 focus:border-cor4'
-                                                            type="text"
-                                                            value={ingrediente.nomeIngrediente}
-                                                            onChange={(e) => {
-                                                                const novosIngredientes = [...ingredientesAdicionados];
-                                                                novosIngredientes[index].nomeIngrediente = e.target.value;
-                                                                setIngredientesAdicionados(novosIngredientes);
-                                                            }}
-                                                        />
+                                                        <div>
+                                                            <input
+                                                                className='w-72 bg-white p-1 rounded-md focus:outline-none border border-gray-400 focus:border-2 focus:border-cor4'
+                                                                type="text"
+                                                                value={ingrediente.nomeIngrediente}
+                                                                onChange={(e) => {
+                                                                    const novosIngredientes = [...ingredientesAdicionados];
+                                                                    novosIngredientes[index].nomeIngrediente = e.target.value;
+                                                                    setIngredientesAdicionados(novosIngredientes);
+                                                                }}
+                                                                onFocus={() => setDropdownIngredienteAdicionadoOpen(index)}
+                                                            />
+                                                            {dropdownIngredienteAdicionadoOpen === index && (
+                                                                <div className='relative'>
+                                                                    <div className='absolute z-10 w-96 bg-white border border-gray-300 shadow-lg'>
+                                                                        {estoque.map((opcao) => (
+                                                                            <div
+                                                                                key={opcao._id}
+                                                                                className='cursor-pointer p-2 hover:bg-gray-200'
+                                                                                onMouseDown={() => handleEstoqueSelect(opcao, ingrediente.nomeIngrediente, true, index)}
+                                                                            >
+                                                                                {opcao.genero}
+                                                                            </div>
+                                                                        ))}
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                        </div>
                                                         <input
                                                             className='w-24 bg-white text-center p-1 rounded-md focus:outline-none border border-gray-400 focus:border-2 focus:border-cor4'
                                                             type="number"
@@ -378,7 +475,7 @@ const EscolaCadastroRefeicao = () => {
                                 {isEditing && (
                                     <button
                                         onClick={() => {
-                                            setIsEditing(true); 
+                                            setIsEditing(true)
                                             adicionarNovoIngrediente(); // Chama a função para adicionar novo ingrediente
                                         }}
                                         className="w-7 h-7 bg-green-600 hover:bg-green-500 text-white rounded-full focus:outline-none focus:border-gray-600"

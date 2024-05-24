@@ -25,16 +25,6 @@ export async function POST(request: NextRequest) {
                 const { genero, quantidadeRecebida, validade, classificacao } = ingredienteData;
             
 
-                // Verifica se já existe um ingrediente com o mesmo gênero e validade associado à escola do usuário
-                const existingIngredient = await Ingrediente.findOne({
-                    genero,
-                    validade
-                  });
-                  
-                  // Se existir um ingrediente com o mesmo gênero e validade, retorne um erro
-                  if (existingIngredient) {
-                    return NextResponse.json({ error: "Ingrediente já cadastrado com o mesmo gênero e validade" }, { status: 400 });
-                  }
         
 
                 // Cria um novo registro de ingrediente associado à escola do usuário logado

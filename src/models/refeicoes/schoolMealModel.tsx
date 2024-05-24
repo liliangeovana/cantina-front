@@ -47,7 +47,6 @@ const schoolMealModelSchema = new mongoose.Schema(
     },
     ingredientesAdicionados: {
       type: [ingredienteAdicionadoSchema],
-      required: true
     },
     padraoMantido: {
       type: Boolean
