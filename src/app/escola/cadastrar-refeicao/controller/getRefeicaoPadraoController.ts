@@ -13,6 +13,7 @@ interface RefeicaoPadrao {
     turno:string;
     descricao: string;
     ingredientes: Ingrediente[];
+    
 }
 
 const useGetRefeicaoPadraController = () => {

@@ -136,7 +136,6 @@ const EscolaCadastroRefeicao = () => {
         setDropdownOpen(false);
     };
 
-
     const handleSubmitForm = () => {
         if (selectedRefeicao && quantidadeAlunos && selectedRefeicao.ingredientes.length > 0) {
             const ingredientesMultiplicados = selectedRefeicao.ingredientes.map(ingrediente => ({
@@ -455,7 +454,7 @@ const EscolaCadastroRefeicao = () => {
                                                             value={ingrediente.quantidade}
                                                             onChange={(e) => {
                                                                 const novosIngredientes = [...ingredientesAdicionados];
-                                                                novosIngredientes[index].quantidade = e.target.value;
+                                                                novosIngredientes[index].quantidade = parseFloat(e.target.value);
                                                                 setIngredientesAdicionados(novosIngredientes);
                                                             }}
                                                         />

@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 
 interface Ingrediente {
-    _id: string;
+    _id?: string;
     nomeIngrediente: string;
     quantidade: number;
 }
