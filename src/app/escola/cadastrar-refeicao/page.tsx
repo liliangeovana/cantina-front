@@ -36,7 +36,7 @@ const EscolaCadastroRefeicao = () => {
     const [estoqueValue, setEstoqueValue] = useState('');
     const [searchValue, setSearchValue] = useState('');
     const dropdownRef = useRef(null);
-    const [dropdownOpen, setDropdownOpen] = useState<number | null>(null);
+    const [dropdownOpen, setDropdownOpen] = useState(false);
     const [dropdownIngredienteOpen, setDropdownIngredienteOpen] = useState<number | null>(null);
     const [dropdownIngredienteAdicionadoOpen, setDropdownIngredienteAdicionadoOpen] = useState<number | null>(null);
     const [isEditing, setIsEditing] = useState(false);
