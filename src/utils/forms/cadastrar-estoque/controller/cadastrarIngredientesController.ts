@@ -58,9 +58,11 @@ const useCadastrarIngredientesController = () => {
         icon: "success",
         title: "Cadastrado com sucesso!",
         showConfirmButton: false,
-        timer: 10500
+        timer: 1500
       });
-      window.location.reload();
+      setTimeout(() => {
+        window.location.reload();
+    }, 2000);
     } catch (error) {
       console.error('Cadastro falhou:', error);
       Swal.fire({

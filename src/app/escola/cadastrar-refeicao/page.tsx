@@ -1,11 +1,14 @@
 'use client'
 import { useState, ChangeEvent, useEffect, useRef } from 'react';
-import LoadingButtons from '@/components/LoadingButtons';
 import MenuEscola from '@/components/MenuEscola';
 import useGetRefeicaoPadraController from './controller/getRefeicaoPadraoController';
 import useUpdateRefeicaoController from './controller/updateRefeicaoPadraoController';
 import useCadastrarRefeicaoEscolaController from './controller/postRefeicaoController';
 import useGetIngredientesEscolaLogadaController from '../controller/getIngredientesEscolaLogadaController';
+import { formatarData } from '@/utils/formatarData';
+import Loading from '@/components/Loading';
+import Swal from "sweetalert2";
+
 
 const EscolaCadastroRefeicao = () => {
     const { estoque } = useGetIngredientesEscolaLogadaController();
@@ -43,13 +46,6 @@ const EscolaCadastroRefeicao = () => {
     const [isAddNewRefeicao, setIsAddNewRefeicao] = useState(false);
     const [observacao, setObservacao] = useState('');
     const [observacaoModalVisible, setObservacaoModalVisible] = useState(false);
-
-    const defaultValues = {
-        nomeRefeicao: '',
-        quantidadeAlunos: '',
-        turnoRefeicao: '',
-        descricaoPreparo: '',
-    };
 
     useEffect(() => {
         if (isAddNewRefeicao) {
@@ -94,6 +90,23 @@ const EscolaCadastroRefeicao = () => {
         setObservacaoModalVisible(!observacaoModalVisible);
     };
 
+    const handleSubmitObservacao = () => {
+        // Verifica se a observação não está vazia antes de salvar
+        if (observacao.trim() !== '') {
+            console.log('Observação salva:', observacao);
+            toggleObservacaoModal(); // Fecha a modal após salvar
+        } else {
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "Campo vazio, observação não pode ser salva.",
+                showConfirmButton: false,
+                timer: 1500
+              });
+        }
+    };
+    
+
     const handleIngredientChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, ingredienteId: any) => {
         const { value } = e.target;
         if (selectedRefeicao !== null) {
@@ -125,7 +138,6 @@ const EscolaCadastroRefeicao = () => {
 
     const handleNomeRefeicaoBlur = () => {
         if (!searchValue.trim()) {
-            // Limpa os ingredientes renderizados
             setSelectedRefeicao(null);
         }
     };
@@ -160,7 +172,9 @@ const EscolaCadastroRefeicao = () => {
 
 
     if (loading) {
-        return <LoadingButtons />;
+        <div className="flex justify-center items-center">
+                <Loading />
+        </div>
     }
 
     if (error) {
@@ -199,7 +213,8 @@ const EscolaCadastroRefeicao = () => {
                         </div>
 
                         <div className='flex w-full justify-end'>
-                            <button
+                            {selectedRefeicao && (
+                                <button
                                 onClick={() => {
                                     setIsEditing(!isEditing); // Alterna o estado de edição
                                     if (isEditing) {
@@ -210,24 +225,26 @@ const EscolaCadastroRefeicao = () => {
                             >
                                 {isEditing ? "Finalizar Edição" : "Editar refeição"}
                             </button>
+                            )}
                         </div>
 
 
                         {observacaoModalVisible && (
-                            <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
-                                <div className="bg-white rounded-lg p-6">
+                            <div className="fixed w-full inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
+                                <div className="bg-white w-96 rounded-lg p-6">
                                     <h2 className="text-xl font-semibold mb-4">Observação</h2>
                                     <textarea
                                         className='w-full p-1 rounded-md focus:outline-none border border-gray-400 focus:border-2 focus:border-cor4'
                                         id="observacao"
                                         name="observacao"
+                                        rows={4}
                                         value={observacao}
                                         onChange={(e) => setObservacao(e.target.value)}
                                     />
                                     <div className="mt-4 flex justify-end">
                                         <button
-                                            onClick={toggleObservacaoModal}
-                                            className="p-2 text-white bg-blue-600 hover:bg-blue-500 rounded-md focus:outline-none"
+                                             onClick={handleSubmitObservacao}
+                                            className="p-2 text-sm text-white bg-blue-600 hover:bg-blue-500 rounded-md focus:outline-none"
                                         >
                                             Salvar
                                         </button>
@@ -255,7 +272,7 @@ const EscolaCadastroRefeicao = () => {
                                             onChange={(e) => setSearchValue(e.target.value)}
                                             onFocus={() => setDropdownOpen(true)}
                                             onBlur={handleNomeRefeicaoBlur}
-                                            placeholder="Pesquise a refeição..."
+                                            placeholder="Pesquise a refeição"
                                         />
                                         {dropdownOpen && (
                                             <ul className="absolute z-10 w-full bg-white border border-gray-400 rounded-b-lg shadow-lg mt-2">
@@ -273,7 +290,7 @@ const EscolaCadastroRefeicao = () => {
                                     <div className='w-52 flex flex-col gap-2 items-center'>
                                         <label className='font-semibold text-sm' htmlFor="quantidadeAlunos">Quantidade de alunos</label>
                                         <input
-                                            className='w-32 p-1 rounded-md focus:outline-none border border-gray-400 focus:border-2 focus:border-cor4'
+                                            className='w-32 p-1 text-center rounded-md focus:outline-none border border-gray-400 focus:border-2 focus:border-cor4'
                                             type="number"
                                             id="quantidadeAlunos"
                                             name="quantidadeAlunos"
@@ -294,7 +311,7 @@ const EscolaCadastroRefeicao = () => {
                                                 turno: e.target.value
                                             })}
                                         >
-                                            <option value="">Selecione o turno</option>
+                                            <option value="" disabled>Selecione</option>
                                             <option value="Manhã">Manhã</option>
                                             <option value="Tarde">Tarde</option>
                                         </select>
@@ -309,7 +326,7 @@ const EscolaCadastroRefeicao = () => {
                                     <label className='font-semibold text-sm' htmlFor="descricaoPreparo">Descrição do Preparo</label>
                                     <textarea
                                         rows={10}
-                                        className='w-full p-1 text-justify rounded-md focus:outline-none border border-gray-400 focus:border-2 focus:border-cor4'
+                                        className='w-full bg-white p-2 text-justify rounded-md focus:outline-none border border-gray-400 focus:border-2 focus:border-cor4'
                                         id="descricaoPreparo"
                                         name="descricaoPreparo"
                                         value={selectedRefeicao?.descricao || ''}
@@ -317,6 +334,7 @@ const EscolaCadastroRefeicao = () => {
                                             ...selectedRefeicao!,
                                             descricao: e.target.value
                                         })}
+                                        disabled={!isEditing}
                                     />
                                 </div>
                             </div>
@@ -435,10 +453,11 @@ const EscolaCadastroRefeicao = () => {
                                                                         {estoque.map((opcao) => (
                                                                             <div
                                                                                 key={opcao._id}
-                                                                                className='cursor-pointer p-2 hover:bg-gray-200'
+                                                                                className='cursor-pointer p-2 hover:bg-gray-200 flex flex-row justify-between'
                                                                                 onMouseDown={() => handleEstoqueSelect(opcao, ingrediente.nomeIngrediente, true, index)}
                                                                             >
-                                                                                {opcao.genero}
+                                                                                <span>{opcao.genero}</span>
+                                                                                <span>val: {formatarData(opcao.validade)}</span>
                                                                             </div>
                                                                         ))}
                                                                     </div>

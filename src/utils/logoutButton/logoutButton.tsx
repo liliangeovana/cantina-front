@@ -8,7 +8,6 @@ export default function LogoutButton() {
     const handleLogout = async () => {
         const { success, message } = await logout();
         if (success) {
-            alert(message);
             router.push('/');
         } else {
             alert(message);
