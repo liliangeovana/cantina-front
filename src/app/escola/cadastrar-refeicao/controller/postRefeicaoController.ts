@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 interface Ingrediente {
     _id?: string;
@@ -45,8 +46,15 @@ const useCadastrarRefeicaoEscolaController = () => {
             console.log("Dados a serem enviados:", dadosParaEnviar);
     
             const response = await axios.post("/api/refeicoes/escolas/register", dadosParaEnviar);
-            alert("Refeição cadastrada com sucesso");
-            window.location.reload();
+            Swal.fire({
+                icon: "success",
+                title: "Cadastrado com sucesso!",
+                showConfirmButton: false,
+                timer: 1500
+              });
+              setTimeout(() => {
+                window.location.reload();
+            }, 2000);
         } catch (error) {
             console.error('Cadastro falhou:', error);
             alert('Cadastro falhou.');

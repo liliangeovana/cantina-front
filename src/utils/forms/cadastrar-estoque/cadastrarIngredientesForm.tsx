@@ -138,7 +138,7 @@ export default function CadastrarIngredientesForm() {
       <button
         onClick={handleSubmit}
         disabled={!formValid || loading}
-        className={`w-80 h-10 p-2 mt-10 border bg-cor4 border-gray-300 hover:bg-green-600 text-white rounded-lg focus:outline-none focus:border-gray-600 ${(!formValid || loading) ? "cursor-not-allowed opacity-50" : ""}`}
+        className={`my-3 w-80 h-10 p-2 border bg-cor4 border-gray-300 hover:bg-green-600 text-white rounded-lg focus:outline-none focus:border-gray-600 ${(!formValid || loading) ? "cursor-not-allowed opacity-50" : ""}`}
       >
         {loading ? <LoadingButtons /> : "Cadastrar"}
       </button>

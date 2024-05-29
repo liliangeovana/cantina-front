@@ -17,7 +17,10 @@ export async function GET(request: NextRequest) {
         for (const school of schools) {
             // Buscando os ingredientes associados à escola
             const ingredientes = await Ingrediente.find({ school: school._id });
-
+        
+            // Ordenando os ingredientes por nome, considerando acentuação
+            ingredientes.sort((a, b) => a.genero.localeCompare(b.genero, 'pt', { sensitivity: 'base' }));
+        
             // Adicionando as informações da escola e ingredientes ao array
             schoolsWithIngredients.push({
                 school: {
