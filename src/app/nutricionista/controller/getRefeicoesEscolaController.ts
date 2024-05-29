@@ -76,7 +76,7 @@ const useBuscarRefeicoesEscolasController = () => {
 
     useEffect(() => {
         fetchRefeicoes();
-    }, [ingredientesUsados, setIngredientesUsados]);
+    }, []);
 
     return { refeicoesEscolas, isLoading, ingredientesUsados };
 };

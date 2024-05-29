@@ -21,7 +21,7 @@ const useBuscarEstoquesController = () => {
 
   useEffect(() => {
     fetchEstoques();
-  }, [estoquesEscolas, setEstoques]);
+  }, [setEstoques]);
 
   return { estoquesEscolas, isLoading };
 };
