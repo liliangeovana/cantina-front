@@ -2,13 +2,20 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 
-interface IngredienteEstoque {
+export interface IngredienteEstoque {
     _id: string;
     genero: string;
     quantidadeRecebida: number;
+    quantidadeTotal: number;
+    quantidadeUtilizada: number
+    maiorValidade: string;
     validade: string;
     classificacao: string;
-}
+    school: string;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+  }
 
 const useGetIngredientesEscolaLogadaController = () => {
     const [estoque, setEstoque] = useState<IngredienteEstoque[]>([]);

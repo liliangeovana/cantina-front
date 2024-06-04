@@ -1,39 +1,91 @@
 'use client'
+// Importe a interface IngredienteEstoque do controlador
+import { IngredienteEstoque } from "./controller/getIngredientesEscolaLogadaController";
 import React from "react";
 import MenuEscola from "@/components/MenuEscola";
 import useGetIngredientesEscolaLogadaController from "./controller/getIngredientesEscolaLogadaController";
+import useBuscarRefeicoesEscolasController from "../nutricionista/controller/getRefeicoesEscolaController";
 import Loading from "@/components/Loading";
 import { formatarData } from "@/utils/formatarData";
 
-const VisualizarEstoque = () => {
+const VisualizarEstoque: React.FC = () => {
   const { estoque, loading, error } = useGetIngredientesEscolaLogadaController();
+  const { refeicoesEscolas } = useBuscarRefeicoesEscolasController();
+  
+  // Somar os ingredientes utilizados nas refeições
+  const somarIngredientes = (refeicoesEscolas: any[]) => {
+    const ingredientesUtilizados: { [key: string]: number } = {};
+  
+    refeicoesEscolas.forEach((escola: any) => {
+      escola.meals.forEach((refeicao: any) => {
+        refeicao.ingredientes.forEach((ingrediente: any) => {
+          const nomeIngrediente: string = ingrediente.nomeIngrediente;
+          const quantidade: number = ingrediente.quantidade;
+  
+          if (ingredientesUtilizados[nomeIngrediente]) {
+            ingredientesUtilizados[nomeIngrediente] += quantidade;
+          } else {
+            ingredientesUtilizados[nomeIngrediente] = quantidade;
+          }
+        });
+  
+        // Somar os ingredientes adicionais
+        refeicao.ingredientesAdicionados.forEach((ingrediente: any) => {
+          const nomeIngrediente: string = ingrediente.nomeIngrediente;
+          const quantidade: number = ingrediente.quantidade;
+  
+          if (ingredientesUtilizados[nomeIngrediente]) {
+            ingredientesUtilizados[nomeIngrediente] += quantidade;
+          } else {
+            ingredientesUtilizados[nomeIngrediente] = quantidade;
+          }
+        });
+      });
+    });
+  
+    return ingredientesUtilizados;
+  };
+  
+  const atualizarEstoque = (estoque: IngredienteEstoque[], ingredientesUtilizados: { [key: string]: number }) => {
+    const ingredientesNoEstoque: { [key: string]: { quantidade: number; validade: string } } = {};
+    
+    // Inicializar o estoque atualizado com as quantidades recebidas do estoque original
+    estoque.forEach((ingrediente: IngredienteEstoque) => {
+      const { genero: nomeIngrediente, quantidadeRecebida: quantidade, validade } = ingrediente;
+      
+      // Adicionar a quantidade recebida ao estoque
+      if (!ingredientesNoEstoque[nomeIngrediente]) {
+        ingredientesNoEstoque[nomeIngrediente] = { quantidade, validade };
+      } else {
+        ingredientesNoEstoque[nomeIngrediente].quantidade += quantidade;
+      }
+    });
+  
+    // Subtrair as quantidades utilizadas do estoque
+    for (const nomeIngrediente in ingredientesUtilizados) {
+      if (ingredientesNoEstoque[nomeIngrediente]) {
+        ingredientesNoEstoque[nomeIngrediente].quantidade -= ingredientesUtilizados[nomeIngrediente];
+      
+      }
+    }
+  
+    return ingredientesNoEstoque;
+  };
+   
+  
 
-
-   // Obtendo a data atual do computador
-   const dataAtual = new Date();
-
-  // Dividir os itens do estoque em duas listas: uma para os gêneros e outra para as quantidades e validades
-  const generos = estoque.map(item => item.genero);
-  const quantidadesEValidades = estoque.map(item => ({
-    quantidadeRecebida: item.quantidadeRecebida,
-    validade: item.validade,
-    // Verificando se a validade está vencida
-    vencido: new Date(item.validade) < dataAtual
-  }));
+  const ingredientesUtilizados = somarIngredientes(refeicoesEscolas);
+  const estoqueAtualizado = atualizarEstoque(estoque, ingredientesUtilizados);
 
   return (
     <div>
       <title>Cantina Tech | Visualizar Estoque</title>
       <div className="flex flex-row">
-
-        {/**MENU */}
         <section>
           <MenuEscola />
         </section>
-
-        {/**LOADING */}
         <section className="w-full">
-          <div className="h-svh p-8 flex justify-center overflow-auto"> 
+          <div className="h-svh p-8 flex justify-center overflow-auto">
             {loading && (
               <div className="flex justify-center items-center">
                 <Loading />
@@ -42,22 +94,18 @@ const VisualizarEstoque = () => {
             {error && (
               <p>Erro ao carregar os ingredientes: {error}</p>
             )}
-            {estoque && estoque.length === 0 && !loading && !error && (
-              <div className="flex justify-center items-center">
-                <p>Nenhum item no estoque.</p>
-              </div>
+            {!loading && estoque.length === 0 && (
+              <p>Nenhum estoque cadastrado</p>
             )}
-
-            {/**ITEMS CARREGADOS */}
             {!loading && !error && estoque && estoque.length > 0 && (
               <div className="w-full text-center">
                 <div className="grid grid-cols-3 gap-8">
                   <div className="flex flex-col gap-4">
                     <h2 className="text-xl font-semibold">Estoque</h2>
                     <div className="flex flex-col gap-3 m-auto">
-                      {generos.map((genero, index) => (
-                        <div className="bg-white w-72 p-2 rounded-md shadow" key={index}> {/* Add key prop */}
-                          <p>{genero}</p>
+                      {Object.entries(estoqueAtualizado).map(([nomeIngrediente, info], index) => (
+                        <div className="bg-white w-72 p-2 rounded-md shadow" key={index}>
+                          <p>{nomeIngrediente}</p>
                         </div>
                       ))}
                     </div>
@@ -65,9 +113,9 @@ const VisualizarEstoque = () => {
                   <div className="flex flex-col gap-4">
                     <h2 className="text-xl font-semibold">Quantidade</h2>
                     <div className="flex flex-col gap-3 m-auto">
-                      {quantidadesEValidades.map((item, index) => (
-                        <div className="bg-white w-44 p-2 rounded-md shadow" key={index}> {/* Add key prop */}
-                          <p>{item.quantidadeRecebida}g</p>
+                      {Object.entries(estoqueAtualizado).map(([nomeIngrediente, info], index) => (
+                        <div className="bg-white w-72 p-2 rounded-md shadow" key={index}>
+                          <p>{info.quantidade}</p>
                         </div>
                       ))}
                     </div>
@@ -75,10 +123,10 @@ const VisualizarEstoque = () => {
                   <div className="flex flex-col gap-4">
                     <h2 className="text-xl font-semibold">Validade</h2>
                     <div className="flex flex-col gap-3 m-auto">
-                      {quantidadesEValidades.map((item, index) => (
-                        <div className={`bg-white w-44 p-2 rounded-md shadow ${item.vencido ? 'border border-red-500 text-red-500' : ''}`} key={index}> {/* Add key prop */}
-                        <p>{formatarData(item.validade)}</p>
-                      </div>
+                      {Object.entries(estoqueAtualizado).map(([nomeIngrediente, info], index) => (
+                        <div className="bg-white w-72 p-2 rounded-md shadow" key={index}>
+                          <p>{formatarData(info.validade)}</p>
+                        </div>
                       ))}
                     </div>
                   </div>
