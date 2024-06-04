@@ -15,7 +15,6 @@ const EscolaCadastroRefeicao = () => {
 
     const {
         handleSubmit,
-        loading: postLoading
     } = useCadastrarRefeicaoEscolaController();
 
     const {
@@ -173,7 +172,7 @@ const EscolaCadastroRefeicao = () => {
 
     if (loading) {
         <div className="flex justify-center items-center">
-                <Loading />
+            <Loading />
         </div>
     }
 
