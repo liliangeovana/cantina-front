@@ -33,6 +33,7 @@ interface RefeicaoEscola {
 
 const useBuscarRefeicoesEscolasController = () => {
     const [refeicoesEscolas, setRefeicoes] = useState<RefeicaoEscola[]>([]);
+    const [refeicao, setRefeicao] = useState<Refeicao[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [ingredientesUsados, setIngredientesUsados] = useState<Ingrediente[]>([]);
 
@@ -40,14 +41,14 @@ const useBuscarRefeicoesEscolasController = () => {
         try {
             const response = await axios.get("/api/ingredientes/usados-refeicoes");
             const responseData = response.data;
-    
+
             if (!Array.isArray(responseData.data)) {
                 console.error("Os dados retornados não contêm uma matriz:", responseData);
                 return;
             }
-    
+
             const data: RefeicaoEscola[] = responseData.data;
-    
+
             // Agrupar ingredientes por nome e somar quantidades
             const ingredientesUsados = data.flatMap(refeicaoEscola => {
                 return refeicaoEscola.meals.flatMap(refeicao => {
@@ -62,10 +63,11 @@ const useBuscarRefeicoesEscolasController = () => {
                 }
                 return acc;
             }, [] as Ingrediente[]).sort((a, b) => a.nomeIngrediente.localeCompare(b.nomeIngrediente, 'pt', { sensitivity: 'base' }));
-    
+
             console.log('ingredientes usados: ', ingredientesUsados);
-    
+
             setRefeicoes(data);
+            setRefeicao(data.flatMap(escola => escola.meals)); // Set the refeicao state
             setIngredientesUsados(ingredientesUsados);
         } catch (error) {
             console.error("Erro ao buscar refeições:", error);
@@ -78,7 +80,7 @@ const useBuscarRefeicoesEscolasController = () => {
         fetchRefeicoes();
     }, []);
 
-    return { refeicoesEscolas, isLoading, ingredientesUsados };
+    return { refeicoesEscolas, refeicao, isLoading, ingredientesUsados };
 };
 
 export default useBuscarRefeicoesEscolasController;

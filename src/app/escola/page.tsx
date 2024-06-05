@@ -115,7 +115,7 @@ const VisualizarEstoque: React.FC = () => {
                     <div className="flex flex-col gap-3 m-auto">
                       {Object.entries(estoqueAtualizado).map(([nomeIngrediente, info], index) => (
                         <div className="bg-white w-72 p-2 rounded-md shadow" key={index}>
-                          <p>{info.quantidade}</p>
+                          <p>{info.quantidade}g</p>
                         </div>
                       ))}
                     </div>
