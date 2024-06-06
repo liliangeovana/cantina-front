@@ -452,11 +452,10 @@ const EscolaCadastroRefeicao = () => {
                                                                         {estoque.map((opcao) => (
                                                                             <div
                                                                                 key={opcao._id}
-                                                                                className='cursor-pointer p-2 hover:bg-gray-200 flex flex-row justify-between'
+                                                                                className='cursor-pointer p-2 hover:bg-gray-200'
                                                                                 onMouseDown={() => handleEstoqueSelect(opcao, ingrediente.nomeIngrediente, true, index)}
                                                                             >
                                                                                 <span>{opcao.genero}</span>
-                                                                                <span>val: {formatarData(opcao.validade)}</span>
                                                                             </div>
                                                                         ))}
                                                                     </div>

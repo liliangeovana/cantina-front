@@ -22,7 +22,7 @@ export default function LoginForm() {
                 </div>
                 
                 <div className="flex flex-col gap-y-2">
-                    <label htmlFor="password">Password</label>
+                    <label htmlFor="password">Senha</label>
                     <input
                         className="p-2 border border-gray-400 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
                         id="password"

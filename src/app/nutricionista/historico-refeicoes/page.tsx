@@ -3,12 +3,13 @@ import React, { useState, useEffect } from 'react';
 import MenuNutri from '@/components/MenuNutri';
 import useBuscarRefeicoesEscolasController from '../controller/getRefeicoesEscolaController';
 import Loading from '@/components/Loading';
+import Link from 'next/link';
 
 const HistoricoPage: React.FC = () => {
     const { refeicoesEscolas, refeicao, isLoading } = useBuscarRefeicoesEscolasController();
     const [escolaSelecionada, setEscolaSelecionada] = useState<string | undefined>(undefined);
     const [selectedMonth, setSelectedMonth] = useState<string>("");
-    const [organizedMeals, setOrganizedMeals] = useState<{ [key: string]: { date: string, nome: string, padraoMantido: boolean }[] }>({ "Manhã": [], "Tarde": [] });
+    const [organizedMeals, setOrganizedMeals] = useState<{ [key: string]: { _id: string, date: string, nome: string, padraoMantido: boolean }[] }>({ "Manhã": [], "Tarde": [] });
 
     useEffect(() => {
         if (!isLoading && refeicoesEscolas.length > 0 && !escolaSelecionada) {
@@ -17,10 +18,10 @@ const HistoricoPage: React.FC = () => {
     }, [isLoading, refeicoesEscolas, escolaSelecionada]);
 
     useEffect(() => {
-        const mealsByShift: { [key: string]: { date: string, nome: string, padraoMantido: boolean }[] } = { "Manhã": [], "Tarde": [] };
+        const mealsByShift: { [key: string]: { _id: string, date: string, nome: string, padraoMantido: boolean }[] } = { "Manhã": [], "Tarde": [] };
         refeicao.forEach(meal => {
             const date = new Date(meal.createdAt).toLocaleDateString();
-            mealsByShift[meal.turno].push({ date, nome: meal.nome, padraoMantido: meal.padraoMantido });
+            mealsByShift[meal.turno].push({ _id: meal._id, date, nome: meal.nome, padraoMantido: meal.padraoMantido });
         });
         setOrganizedMeals(mealsByShift);
     }, [isLoading, refeicao]);
@@ -32,12 +33,12 @@ const HistoricoPage: React.FC = () => {
             return selectedMonth === "" || mealMonth === selectedMonth;
         });
 
-        const mealsByShift: { [key: string]: { date: string, nome: string, padraoMantido: boolean }[] } = { "Manhã": [], "Tarde": [] };
+        const mealsByShift: { [key: string]: { _id: string, date: string, nome: string, padraoMantido: boolean }[] } = { "Manhã": [], "Tarde": [] };
         filteredMeals.forEach(meal => {
             const date = new Date(meal.createdAt).toLocaleDateString();
-            mealsByShift[meal.turno].push({ date, nome: meal.nome, padraoMantido: meal.padraoMantido });
+            mealsByShift[meal.turno].push({ _id: meal._id, date, nome: meal.nome, padraoMantido: meal.padraoMantido });
         });
-        setOrganizedMeals(prevOrganizedMeals => ({ ...prevOrganizedMeals, ...mealsByShift }));
+        setOrganizedMeals(mealsByShift);
     }, [selectedMonth, refeicao]);
 
     const handleEscolaSelecionadaChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -101,25 +102,33 @@ const HistoricoPage: React.FC = () => {
                                 <p>Nenhuma refeição produzida</p>
                             </div>
                         ) : (
-                            <div className='grid grid-cols-2 gap-10 overflow-auto'>
-                                {["Manhã", "Tarde"].map(shift => (
-                                    <div key={shift}>
-                                        <h2 className='font-semibold text-center mb-6 text-cor3 uppercase'>{shift}</h2>
-                                        <div>
-                                            {organizedMeals[shift] && organizedMeals[shift].length > 0 ? (
-                                                organizedMeals[shift].map((meal, index) => {
-                                                    return (
-                                                        <div key={index} className="flex flex-col gap-2 mb-6 text-center p-4">
-                                                            <span className='font-semibold text-sm'>{meal.date}</span> <span  className={meal.padraoMantido ? 'bg-white border rounded-md p-2 shadow-md' : 'bg-white border rounded-md border-red-500 p-2 shadow-md'}>{meal.nome}</span></div>
-                                                        
-                                                    );
-                                                })
-                                            ) : (
-                                                <div className='text-center'>Nenhuma refeição cadastrada</div>
-                                            )}
+                            <div className='flex flex-col'>
+                                <p className='text-red-500 text-xs pb-3 text-right'>*selecione uma refeição para mais detalhes</p>
+                                <div className='grid grid-cols-2 gap-10 overflow-auto'>
+                                    {["Manhã", "Tarde"].map(shift => (
+                                        <div key={shift}>
+                                            <h2 className='font-semibold text-center mb-6 text-cor3 uppercase'>{shift}</h2>
+                                            <div>
+                                                {organizedMeals[shift] && organizedMeals[shift].length > 0 ? (
+                                                    organizedMeals[shift].map((meal, index) => {
+                                                        return (
+                                                            <div key={index} className="flex flex-col gap-2 mb-6 text-center p-4">
+                                                                <span className='font-semibold text-sm '>{meal.date}</span>
+                                                                <Link className={meal.padraoMantido ? 'bg-white border rounded-md p-2 shadow-sm cursor-pointer hover:shadow-md' : 'bg-white border rounded-md border-red-500 p-2 shadow-sm cursor-pointer hover:shadow-md'} href={`/nutricionista/historico-refeicoes/detalhes/${meal._id}`}>
+                                                                    <span>
+                                                                        {meal.nome}
+                                                                    </span>
+                                                                </Link>
+                                                            </div>
+                                                        );
+                                                    })
+                                                ) : (
+                                                    <div className='text-center'>Nenhuma refeição cadastrada</div>
+                                                )}
+                                            </div>
                                         </div>
-                                    </div>
-                                ))}
+                                    ))}
+                                </div>
                             </div>
                         )}
                     </div>
