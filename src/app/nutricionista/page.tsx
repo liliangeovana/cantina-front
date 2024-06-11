@@ -27,11 +27,11 @@ const NutriHomePage = () => {
 
   const agruparIngredientesPorNome = (ingredientes: any[]) => {
     return ingredientes.reduce((acc, ingrediente) => {
-      const genero = ingrediente.genero;
-      if (!acc[genero]) {
-        acc[genero] = { ...ingrediente, quantidadeRecebida: 0 };
+      const nome = ingrediente.genero;
+      if (!acc[nome]) {
+        acc[nome] = { ...ingrediente, quantidadeRecebida: 0 };
       }
-      acc[genero].quantidadeRecebida += ingrediente.quantidadeRecebida;
+      acc[nome].quantidadeRecebida += ingrediente.quantidadeRecebida;
       return acc;
     }, {} as Record<string, any>);
   };
@@ -58,13 +58,34 @@ const NutriHomePage = () => {
       )
     : [];
 
+  // Função para agrupar ingredientes usados pela escola selecionada
+  const agruparIngredientesUsados = (meals: any[]) => {
+    const ingredientesUsados = meals.flatMap((meal) =>
+      [...meal.ingredientes, ...meal.ingredientesAdicionados]
+    );
+
+    return ingredientesUsados.reduce((acc, ingrediente) => {
+      const nome = ingrediente.nomeIngrediente;
+      if (!acc[nome]) {
+        acc[nome] = { ...ingrediente, quantidade: 0 };
+      }
+      acc[nome].quantidade += ingrediente.quantidade;
+      return acc;
+    }, {} as Record<string, any>);
+  };
+
+  const ingredientesUsadosAgrupados = escolaSelecionada
+    ? agruparIngredientesUsados(
+        refeicoesEscolas.find((item: any) => item.school._id === escolaSelecionada)?.meals || []
+      )
+    : {};
 
   // Verifica se há ingredientes
   const ingredientesExistentes = Object.keys(ingredientesAgrupados).length > 0;
 
   // Combina ingredientes com usados
   const ingredientesComUsados = Object.keys(ingredientesAgrupados).map((key) => {
-    const ingredienteUsado = ingredientesUsados.find((usado: any) => usado.nomeIngrediente === key);
+    const ingredienteUsado = ingredientesUsadosAgrupados[key];
     return {
       nome: key,
       quantidadeRecebida: ingredientesAgrupados[key].quantidadeRecebida,
@@ -184,13 +205,13 @@ const NutriHomePage = () => {
                     </div>
                   </div>
 
-                  {/* DIAS COM RECEBIMENTO */}
+                  {/* DATA */}
                   <div className="flex flex-col gap-4">
-                    <h3 className="font-semibold">Recebimentos</h3>
+                    <h3 className="font-semibold">Data</h3>
                     <div className="flex flex-col gap-4">
-                      {datasRecebimento.map((data:any, index:any) => (
+                    {Object.values(ingredientesAgrupados).map((ingrediente: any, index: number) => (
                         <div key={index} className="bg-white mx-auto w-44 p-2 rounded-md shadow">
-                          <p>{data}</p>
+                          <p>{new Date(ingrediente.createdAt).toLocaleDateString('pt-BR')}</p>
                         </div>
                       ))}
                     </div>
@@ -198,8 +219,8 @@ const NutriHomePage = () => {
                 </div>
               </div>
             ) : (
-              <div className="flex justify-center items-center">
-                <p>Nenhum item no estoque</p>
+              <div className="text-center p-8 uppercase text-red-500 font-semibold">
+                <h2>Sem Ingredientes para essa escola</h2>
               </div>
             )}
           </div>
