@@ -4,13 +4,13 @@ import { IngredienteEstoque } from "./controller/getIngredientesEscolaLogadaCont
 import React from "react";
 import MenuEscola from "@/components/MenuEscola";
 import useGetIngredientesEscolaLogadaController from "./controller/getIngredientesEscolaLogadaController";
-import useBuscarRefeicoesEscolasController from "../nutricionista/controller/getRefeicoesEscolaController";
+import useRefeicaoEscolaIdController from "./controller/getRefeicaoEscolaId";
 import Loading from "@/components/Loading";
 import { formatarData } from "@/utils/formatarData";
 
 const VisualizarEstoque: React.FC = () => {
   const { estoque, loading, error } = useGetIngredientesEscolaLogadaController();
-  const { refeicoesEscolas } = useBuscarRefeicoesEscolasController();
+  const { refeicoesEscolas } = useRefeicaoEscolaIdController();
   
   // Somar os ingredientes utilizados nas refeições
   const somarIngredientes = (refeicoesEscolas: any[]) => {
@@ -51,26 +51,25 @@ const VisualizarEstoque: React.FC = () => {
     
     // Inicializar o estoque atualizado com as quantidades recebidas do estoque original
     estoque.forEach((ingrediente: IngredienteEstoque) => {
-      const { genero: nomeIngrediente, quantidadeRecebida: quantidade, validade } = ingrediente;
-      
-      // Adicionar a quantidade recebida ao estoque
-      if (!ingredientesNoEstoque[nomeIngrediente]) {
-        ingredientesNoEstoque[nomeIngrediente] = { quantidade, validade };
-      } else {
-        ingredientesNoEstoque[nomeIngrediente].quantidade += quantidade;
-      }
+        const { genero: nomeIngrediente, quantidadeRecebida: quantidade, validade } = ingrediente;
+        
+        // Adicionar a quantidade recebida ao estoque
+        if (!ingredientesNoEstoque[nomeIngrediente]) {
+            ingredientesNoEstoque[nomeIngrediente] = { quantidade, validade };
+        } else {
+            ingredientesNoEstoque[nomeIngrediente].quantidade += quantidade;
+        }
     });
-  
+
     // Subtrair as quantidades utilizadas do estoque
     for (const nomeIngrediente in ingredientesUtilizados) {
-      if (ingredientesNoEstoque[nomeIngrediente]) {
-        ingredientesNoEstoque[nomeIngrediente].quantidade -= ingredientesUtilizados[nomeIngrediente];
-      
-      }
+        if (ingredientesNoEstoque[nomeIngrediente]) {
+            ingredientesNoEstoque[nomeIngrediente].quantidade -= ingredientesUtilizados[nomeIngrediente];
+        }
     }
-  
+
     return ingredientesNoEstoque;
-  };
+};
    
   
 
